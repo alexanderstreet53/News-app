@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TLDR — Premium</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',sans-serif;background:#0A0D1F;color:#fff;-webkit-font-smoothing:antialiased}
+.c{max-width:480px;margin:0 auto}
+
+.hdr{position:sticky;top:0;z-index:100;backdrop-filter:blur(24px);background:rgba(10,13,31,0.92);padding:14px 16px;display:flex;align-items:center;gap:10px;border-bottom:1px solid rgba(255,255,255,0.04)}
+.hdr-badge{padding:4px 8px;border-radius:7px;background:linear-gradient(135deg,#FFD93D,#F59E0B);font-family:'JetBrains Mono';font-size:9px;font-weight:700;letter-spacing:1.5px;color:#000}
+.hdr-title{font-family:'Space Grotesk';font-weight:700;font-size:18px;flex:1}
+
+/* Featured issue — same card system, just bigger */
+.featured{margin:16px;border-radius:18px;background:#161933;border:1px solid rgba(255,255,255,0.04);overflow:hidden}
+.feat-top{padding:20px;border-bottom:1px solid rgba(255,255,255,0.04)}
+.feat-label{display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:8px;background:rgba(255,217,61,0.1);font-family:'JetBrains Mono';font-size:9px;font-weight:700;letter-spacing:1px;color:#FFD93D;margin-bottom:14px}
+.feat-title{font-family:'Space Grotesk';font-size:22px;font-weight:700;line-height:1.2;letter-spacing:-.5px;color:#F3F4F6;margin-bottom:4px}
+.feat-sub{font-size:13px;color:#6B7280;margin-bottom:12px}
+.feat-meta{display:flex;gap:12px}
+.feat-meta .pill{padding:3px 8px;border-radius:8px;background:rgba(255,255,255,0.05);font-size:10px;font-weight:600;color:#4B5563}
+
+.feat-articles{padding:16px 20px}
+.feat-articles .label{font-family:'JetBrains Mono';font-size:9px;font-weight:600;letter-spacing:1.5px;color:#374151;margin-bottom:10px}
+
+.fa-item{display:flex;gap:10px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.03);cursor:pointer}
+.fa-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0;margin-top:6px}
+.fa-body{flex:1}
+.fa-title{font-size:13px;font-weight:700;line-height:1.35;color:#D1D5DB;margin-bottom:2px}
+.fa-meta{font-size:10px;color:#374151}
+/* Expandable */
+.fa-summary{font-size:11px;line-height:1.5;color:#4B5563;margin-top:4px;display:none}
+.fa-summary.show{display:block}
+.fa-expand{font-size:9px;font-weight:600;color:#FFD93D;cursor:pointer;margin-top:3px;display:inline-flex;align-items:center;gap:3px}
+.fa-expand .arrow{transition:transform .2s;display:inline-block;font-size:7px}
+.fa-expand .arrow.open{transform:rotate(90deg)}
+
+.read-btn{display:block;width:100%;padding:12px;border-radius:12px;background:rgba(255,217,61,0.1);border:1px solid rgba(255,217,61,0.12);color:#FFD93D;font-size:13px;font-weight:700;text-align:center;cursor:pointer;margin-top:12px;text-decoration:none;transition:background .15s}
+.read-btn:hover{background:rgba(255,217,61,0.15)}
+
+/* Past issues */
+.sec{padding:22px 16px 6px;display:flex;align-items:center;gap:8px}
+.sec-t{font-family:'JetBrains Mono';font-size:10px;font-weight:600;letter-spacing:1.5px;color:#374151;text-transform:uppercase}
+.sec-l{flex:1;height:1px;background:rgba(255,255,255,0.04)}
+
+.past{margin:4px 16px;padding:14px 16px;border-radius:16px;background:#161933;border:1px solid rgba(255,255,255,0.04);display:flex;gap:12px;align-items:center;cursor:pointer;transition:border-color .15s}
+.past:hover{border-color:rgba(255,255,255,0.08)}
+.past-cover{width:48px;height:60px;border-radius:10px;display:grid;place-items:center;font-family:'JetBrains Mono';font-size:9px;font-weight:700;color:#fff;flex-shrink:0}
+.past-body{flex:1}
+.past-title{font-size:13px;font-weight:700;line-height:1.35;color:#D1D5DB;margin-bottom:2px}
+.past-meta{font-size:10px;color:#374151}
+
+/* Subscribe CTA */
+.sub-cta{margin:24px 16px;padding:20px;border-radius:18px;background:rgba(255,217,61,0.04);border:1px solid rgba(255,217,61,0.08);text-align:center}
+.sub-icon{font-size:28px;margin-bottom:10px}
+.sub-title{font-family:'Space Grotesk';font-size:16px;font-weight:700;margin-bottom:6px;color:#F3F4F6}
+.sub-desc{font-size:12px;color:#4B5563;line-height:1.5;margin-bottom:14px}
+.sub-btn{width:100%;padding:12px;border-radius:12px;background:linear-gradient(135deg,#FFD93D,#F59E0B);border:none;color:#000;font-size:13px;font-weight:700;cursor:pointer}
+
+.nav{position:fixed;bottom:14px;left:50%;transform:translateX(-50%);width:calc(100% - 32px);max-width:448px;backdrop-filter:blur(24px);background:rgba(22,25,51,0.88);border-radius:22px;padding:8px 6px;display:flex;justify-content:space-evenly;box-shadow:0 8px 32px rgba(0,0,0,0.5);border:1px solid rgba(255,255,255,0.06)}
+.ni{padding:7px 11px;border-radius:16px;font-size:16px;cursor:pointer;display:flex;align-items:center;gap:5px;color:#374151;transition:all .2s;text-decoration:none}
+.ni.on{color:#FFD93D;background:rgba(255,217,61,0.1)}
+.ni span{font-size:11px;font-weight:700;display:none}
+.ni.on span{display:inline}
+.end{height:90px}
+</style>
+</head>
+<body>
+<div class="c">
+  <div class="hdr">
+    <div class="hdr-badge">PREMIUM</div>
+    <div class="hdr-title">Too Long; Did Read</div>
+  </div>
+
+  <div class="featured">
+    <div class="feat-top">
+      <div class="feat-label">✨ LATEST ISSUE</div>
+      <div class="feat-title">The AI Infrastructure Edition</div>
+      <div class="feat-sub">Issue #30 · 4 articles</div>
+      <div class="feat-meta">
+        <span class="pill">📅 Mar 30</span>
+        <span class="pill">⏱ 42 min read</span>
+      </div>
+    </div>
+    <div class="feat-articles">
+      <div class="label">IN THIS ISSUE</div>
+
+      <div class="fa-item">
+        <div class="fa-dot" style="background:#6C5CE7"></div>
+        <div class="fa-body">
+          <div class="fa-title">The Hidden Cost of AI Infrastructure</div>
+          <div class="fa-meta">Sarah Chen · Deep Dive · 12 min</div>
+          <div class="fa-summary" id="p1">Data centers consuming unprecedented energy, water cooling straining resources, GPU demand creating global bottleneck. We examine the environmental, economic, and geopolitical implications.</div>
+          <div class="fa-expand" onclick="toggleP('p1',this)"><span class="arrow">▶</span> PREVIEW</div>
+        </div>
+      </div>
+
+      <div class="fa-item">
+        <div class="fa-dot" style="background:#E91E63"></div>
+        <div class="fa-body">
+          <div class="fa-title">Inside the Race to Build Quantum-Resistant Encryption</div>
+          <div class="fa-meta">Marcus Webb · Security · 10 min</div>
+          <div class="fa-summary" id="p2">NIST finalized post-quantum standards, but migration is the real challenge. Banks, governments, and tech companies must update billions of devices.</div>
+          <div class="fa-expand" onclick="toggleP('p2',this)"><span class="arrow">▶</span> PREVIEW</div>
+        </div>
+      </div>
+
+      <div class="fa-item">
+        <div class="fa-dot" style="background:#FF9800"></div>
+        <div class="fa-body">
+          <div class="fa-title">The Developer Productivity Paradox</div>
+          <div class="fa-meta">Priya Patel · Opinion · 8 min</div>
+          <div class="fa-summary" id="p3">AI coding assistants promise huge gains yet team metrics barely moved. Survey of 2,000 devs reveals complexity grew in parallel — they're tackling harder problems.</div>
+          <div class="fa-expand" onclick="toggleP('p3',this)"><span class="arrow">▶</span> PREVIEW</div>
+        </div>
+      </div>
+
+      <div class="fa-item" style="border:none">
+        <div class="fa-dot" style="background:#4CAF50"></div>
+        <div class="fa-body">
+          <div class="fa-title">Africa's Silicon Savannah Is Growing Up</div>
+          <div class="fa-meta">James Mwangi · Startups · 12 min</div>
+        </div>
+      </div>
+
+      <a class="read-btn" href="#">Read Issue #30</a>
+    </div>
+  </div>
+
+  <div class="sec"><span class="sec-t">Past Issues</span><span class="sec-l"></span></div>
+
+  <div class="past">
+    <div class="past-cover" style="background:linear-gradient(135deg,#6A1B9A,#CE93D8)">TL;DR</div>
+    <div class="past-body">
+      <div class="past-title">The Open Source Revolution</div>
+      <div class="past-meta">Issue #29 · Mar 23 · 2 articles · 38 min</div>
+    </div>
+  </div>
+
+  <div class="past" style="margin-top:4px">
+    <div class="past-cover" style="background:linear-gradient(135deg,#1B5E20,#81C784)">TL;DR</div>
+    <div class="past-body">
+      <div class="past-title">The Climate Tech Surge</div>
+      <div class="past-meta">Issue #28 · Mar 16 · 1 article · 35 min</div>
+    </div>
+  </div>
+
+  <div class="sub-cta">
+    <div class="sub-icon">👑</div>
+    <div class="sub-title">Unlock All Issues</div>
+    <div class="sub-desc">Unlimited access to every "Too Long; Did Read" issue — in-depth reporting, analysis, and exclusive interviews.</div>
+    <button class="sub-btn">Subscribe to TLDR Premium</button>
+  </div>
+
+  <div class="end"></div>
+</div>
+
+<div class="nav">
+  <a href="app-feed.html" class="ni">⚡</a>
+  <a href="app-videos.html" class="ni">▶️</a>
+  <a href="app-premium.html" class="ni on">✨ <span>Premium</span></a>
+  <a href="app-settings.html" class="ni">⚙️</a>
+</div>
+
+<script>
+function toggleP(id,btn){document.getElementById(id).classList.toggle('show');btn.querySelector('.arrow').classList.toggle('open')}
+</script>
+</body>
+</html>

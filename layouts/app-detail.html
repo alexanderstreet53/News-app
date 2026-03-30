@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TLDR — Article</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',sans-serif;background:#0A0D1F;color:#fff;-webkit-font-smoothing:antialiased}
+.c{max-width:480px;margin:0 auto}
+
+.hdr{position:sticky;top:0;z-index:100;backdrop-filter:blur(24px);background:rgba(10,13,31,0.92);padding:14px 16px;display:flex;align-items:center;gap:12px;border-bottom:1px solid rgba(255,255,255,0.04)}
+.back{width:36px;height:36px;border-radius:12px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.04);display:grid;place-items:center;font-size:15px;cursor:pointer;color:#6B7280;text-decoration:none}
+.hdr-title{flex:1;font-family:'JetBrains Mono';font-size:10px;font-weight:600;letter-spacing:1.5px;color:#374151;text-transform:uppercase}
+.ib{width:36px;height:36px;border-radius:12px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.04);display:grid;place-items:center;font-size:15px;cursor:pointer;color:#6B7280}
+
+.content{padding:20px 16px}
+
+/* Article meta */
+.art-meta{display:flex;align-items:center;gap:7px;margin-bottom:14px}
+.cat-label{font-family:'JetBrains Mono';font-size:9px;font-weight:700;letter-spacing:1.2px}
+.dot{width:2.5px;height:2.5px;border-radius:50%;background:#374151}
+.mu{font-size:10px;color:#4B5563;font-weight:500}
+
+/* Title */
+.art-title{font-family:'Space Grotesk';font-size:24px;font-weight:700;line-height:1.2;letter-spacing:-.6px;color:#F3F4F6;margin-bottom:16px}
+
+/* Source bar */
+.source-bar{display:flex;align-items:center;gap:8px;padding:12px 14px;border-radius:14px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.04);margin-bottom:24px}
+.source-bar .pill{padding:3px 8px;border-radius:8px;background:rgba(255,255,255,0.05);font-size:10px;font-weight:600;color:#4B5563}
+
+/* TLDR label */
+.tldr-label{display:flex;align-items:center;gap:8px;margin-bottom:12px}
+.tldr-bar{width:3px;height:18px;border-radius:3px}
+.tldr-text{font-family:'JetBrains Mono';font-size:10px;font-weight:700;letter-spacing:2px}
+
+/* Body text */
+.art-body{font-size:15px;line-height:1.75;color:#9CA3AF;margin-bottom:28px}
+.art-body p{margin-bottom:14px}
+
+/* Key points */
+.key-points{margin-bottom:28px}
+.kp-title{font-family:'JetBrains Mono';font-size:10px;font-weight:600;letter-spacing:1.5px;color:#374151;text-transform:uppercase;margin-bottom:10px}
+.kp-item{display:flex;gap:10px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.03)}
+.kp-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;margin-top:6px}
+.kp-text{font-size:13px;line-height:1.5;color:#6B7280}
+
+/* CTA */
+.cta{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:14px;border-radius:14px;background:rgba(108,92,231,0.12);border:1px solid rgba(108,92,231,0.15);color:#6C5CE7;font-size:14px;font-weight:700;cursor:pointer;transition:background .15s;margin-bottom:12px;text-decoration:none}
+.cta:hover{background:rgba(108,92,231,0.18)}
+.cta-secondary{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:14px;border-radius:14px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.04);color:#4B5563;font-size:14px;font-weight:600;cursor:pointer;text-decoration:none}
+
+/* Related */
+.related{padding-top:24px;margin-top:24px;border-top:1px solid rgba(255,255,255,0.04)}
+.related-title{font-family:'JetBrains Mono';font-size:10px;font-weight:600;letter-spacing:1.5px;color:#374151;text-transform:uppercase;margin-bottom:10px}
+.rel-card{padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.03);cursor:pointer}
+.rel-card .meta{margin-bottom:4px}
+.rel-card h3{font-size:13px;font-weight:700;line-height:1.4;color:#D1D5DB}
+.rel-card .src{font-size:10px;font-weight:600;color:#282D45;margin-top:2px}
+
+.end{height:40px}
+</style>
+</head>
+<body>
+<div class="c">
+  <div class="hdr">
+    <a href="app-feed.html" class="back">←</a>
+    <div class="hdr-title">Article</div>
+    <div class="ib">🔖</div>
+    <div class="ib">↗</div>
+  </div>
+
+  <div class="content">
+    <div class="art-meta">
+      <span class="cat-label" style="color:#9C27B0">AI</span><span class="dot"></span>
+      <span class="mu">4 min read</span><span class="dot"></span>
+      <span class="mu">2 hours ago</span>
+    </div>
+
+    <h1 class="art-title">OpenAI Launches GPT-5 With Real-Time Reasoning</h1>
+
+    <div class="source-bar">
+      <span class="pill">🌐 TechCrunch</span>
+      <span class="pill">⏱ 4 min</span>
+      <span class="pill">📅 Mar 30</span>
+    </div>
+
+    <div class="tldr-label">
+      <div class="tldr-bar" style="background:#9C27B0"></div>
+      <div class="tldr-text" style="color:#9C27B0">TLDR</div>
+    </div>
+
+    <div class="art-body">
+      <p>OpenAI has released GPT-5, featuring significant improvements in reasoning, multimodal understanding, and real-time interaction capabilities. The model can now process and respond to video in real-time, and shows major gains on benchmarks for mathematical reasoning and code generation.</p>
+      <p>The release represents a significant leap over GPT-4, with the model scoring 92% on the MMLU benchmark and setting new records on coding evaluations. API pricing remains competitive with a new efficient tier designed for high-volume applications.</p>
+      <p>Industry analysts note that GPT-5's real-time video processing capabilities could transform fields from education to healthcare, enabling AI-powered diagnostic tools and interactive learning experiences.</p>
+    </div>
+
+    <div class="key-points">
+      <div class="kp-title">Key Points</div>
+      <div class="kp-item"><div class="kp-dot" style="background:#9C27B0"></div><div class="kp-text">Real-time video understanding and response</div></div>
+      <div class="kp-item"><div class="kp-dot" style="background:#9C27B0"></div><div class="kp-text">92% on MMLU, new coding benchmark records</div></div>
+      <div class="kp-item"><div class="kp-dot" style="background:#9C27B0"></div><div class="kp-text">Competitive API pricing with new efficient tier</div></div>
+      <div class="kp-item"><div class="kp-dot" style="background:#9C27B0"></div><div class="kp-text">Transformative potential for healthcare and education</div></div>
+    </div>
+
+    <a class="cta" href="#">↗ Read Full Article on TechCrunch</a>
+    <a class="cta-secondary" href="#">↗ Share</a>
+
+    <div class="related">
+      <div class="related-title">Related</div>
+      <div class="rel-card">
+        <div class="meta"><span class="cat-label" style="color:#9C27B0">AI</span><span class="dot"></span><span class="mu">3 min</span></div>
+        <h3>Claude 4.5 Achieves New State-of-the-Art on Coding Benchmarks</h3>
+        <div class="src">Anthropic Blog</div>
+      </div>
+      <div class="rel-card">
+        <div class="meta"><span class="cat-label" style="color:#9C27B0">AI</span><span class="dot"></span><span class="mu">4 min</span></div>
+        <h3>Open-Source LLM Llama 4 Matches GPT-4 Performance</h3>
+        <div class="src">Meta AI Blog</div>
+      </div>
+    </div>
+
+    <div class="end"></div>
+  </div>
+</div>
+</body>
+</html>

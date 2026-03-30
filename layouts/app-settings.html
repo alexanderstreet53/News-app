@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TLDR — Settings</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',sans-serif;background:#0A0D1F;color:#fff;-webkit-font-smoothing:antialiased}
+.c{max-width:480px;margin:0 auto;padding:0 16px}
+
+.hdr{position:sticky;top:0;z-index:100;backdrop-filter:blur(24px);background:rgba(10,13,31,0.92);padding:14px 0;display:flex;align-items:center;gap:10px;border-bottom:1px solid rgba(255,255,255,0.04);margin:0 -16px;padding-left:16px;padding-right:16px}
+.hdr-icon{width:30px;height:30px;border-radius:10px;background:rgba(0,210,211,0.12);display:grid;place-items:center;font-size:13px}
+.hdr-title{font-family:'Space Grotesk';font-weight:700;font-size:18px}
+
+.sec-label{font-family:'JetBrains Mono';font-size:9px;font-weight:600;letter-spacing:2px;color:#6C5CE7;margin:20px 0 8px}
+
+/* Category chooser — the key feature */
+.cat-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:4px}
+.cat-item{padding:12px 14px;border-radius:14px;background:#161933;border:1px solid rgba(255,255,255,0.04);display:flex;align-items:center;gap:10px;cursor:pointer;transition:all .2s;user-select:none}
+.cat-item:hover{border-color:rgba(255,255,255,0.08)}
+.cat-item.on{border-color:rgba(108,92,231,0.3);background:rgba(108,92,231,0.06)}
+.cat-icon{font-size:16px;width:28px;height:28px;border-radius:8px;display:grid;place-items:center;background:rgba(255,255,255,0.04);flex-shrink:0}
+.cat-item.on .cat-icon{background:rgba(108,92,231,0.15)}
+.cat-name{font-size:12px;font-weight:600;color:#6B7280;flex:1}
+.cat-item.on .cat-name{color:#D1D5DB}
+.cat-check{width:16px;height:16px;border-radius:5px;border:1.5px solid rgba(255,255,255,0.08);display:grid;place-items:center;font-size:9px;color:transparent;transition:all .15s}
+.cat-item.on .cat-check{background:#6C5CE7;border-color:#6C5CE7;color:#fff}
+
+.cat-hint{font-size:10px;color:#374151;margin:6px 0 0;line-height:1.5}
+
+/* Quick actions */
+.qa-row{display:flex;gap:8px;margin-bottom:4px}
+.qa{flex:1;padding:14px;border-radius:14px;background:#161933;border:1px solid rgba(255,255,255,0.04);cursor:pointer;transition:border-color .15s}
+.qa:hover{border-color:rgba(255,255,255,0.08)}
+.qa-icon{font-size:18px;margin-bottom:8px}
+.qa-label{font-size:12px;font-weight:600;color:#6B7280}
+
+/* Settings rows */
+.settings-group{border-radius:14px;background:#161933;border:1px solid rgba(255,255,255,0.04);overflow:hidden;margin-bottom:4px}
+.s-row{display:flex;align-items:center;gap:12px;padding:14px 16px;cursor:pointer;transition:background .1s}
+.s-row:hover{background:rgba(255,255,255,0.02)}
+.s-icon{font-size:16px;color:#4B5563;width:20px;text-align:center}
+.s-label{flex:1;font-size:13px;font-weight:500;color:#9CA3AF}
+.s-value{font-size:11px;color:#374151;font-weight:500}
+.s-arrow{color:#282D45;font-size:12px}
+.s-div{height:1px;margin:0 16px;background:rgba(255,255,255,0.03)}
+
+/* Theme picker */
+.theme-row{display:flex;gap:8px;margin-bottom:4px}
+.theme-opt{flex:1;padding:14px 8px;border-radius:14px;background:#161933;border:2px solid rgba(255,255,255,0.04);text-align:center;cursor:pointer;transition:all .2s}
+.theme-opt.on{border-color:rgba(108,92,231,0.3);background:rgba(108,92,231,0.06)}
+.theme-opt .t-icon{font-size:20px;margin-bottom:6px}
+.theme-opt .t-label{font-size:11px;font-weight:600;color:#4B5563}
+.theme-opt.on .t-label{color:#6C5CE7}
+
+/* Footer */
+.footer{text-align:center;padding:24px 0}
+.footer-logo{display:inline-flex;align-items:center;gap:6px;margin-bottom:4px}
+.footer-logo b{background:linear-gradient(135deg,#6C5CE7,#A78BFA);color:#fff;font-family:'Space Grotesk';font-weight:900;font-size:10px;letter-spacing:1.5px;padding:4px 6px;border-radius:6px}
+.footer-logo span{font-family:'Space Grotesk';font-weight:700;font-size:14px}
+.footer-sub{font-size:10px;color:#282D45}
+
+.nav{position:fixed;bottom:14px;left:50%;transform:translateX(-50%);width:calc(100% - 32px);max-width:448px;backdrop-filter:blur(24px);background:rgba(22,25,51,0.88);border-radius:22px;padding:8px 6px;display:flex;justify-content:space-evenly;box-shadow:0 8px 32px rgba(0,0,0,0.5);border:1px solid rgba(255,255,255,0.06)}
+.ni{padding:7px 11px;border-radius:16px;font-size:16px;cursor:pointer;display:flex;align-items:center;gap:5px;color:#374151;transition:all .2s;text-decoration:none}
+.ni.on{color:#00D2D3;background:rgba(0,210,211,0.1)}
+.ni span{font-size:11px;font-weight:700;display:none}
+.ni.on span{display:inline}
+.end{height:90px}
+</style>
+</head>
+<body>
+<div class="c">
+  <div class="hdr">
+    <div class="hdr-icon">⚙</div>
+    <div class="hdr-title">Settings</div>
+  </div>
+
+  <!-- Category chooser -->
+  <div class="sec-label">YOUR CATEGORIES</div>
+  <div class="cat-grid">
+    <div class="cat-item on" onclick="this.classList.toggle('on')">
+      <div class="cat-icon">💻</div>
+      <div class="cat-name">Tech</div>
+      <div class="cat-check">✓</div>
+    </div>
+    <div class="cat-item on" onclick="this.classList.toggle('on')">
+      <div class="cat-icon">🧠</div>
+      <div class="cat-name">AI</div>
+      <div class="cat-check">✓</div>
+    </div>
+    <div class="cat-item on" onclick="this.classList.toggle('on')">
+      <div class="cat-icon">🌐</div>
+      <div class="cat-name">Web Dev</div>
+      <div class="cat-check">✓</div>
+    </div>
+    <div class="cat-item on" onclick="this.classList.toggle('on')">
+      <div class="cat-icon">🔒</div>
+      <div class="cat-name">InfoSec</div>
+      <div class="cat-check">✓</div>
+    </div>
+    <div class="cat-item" onclick="this.classList.toggle('on')">
+      <div class="cat-icon">☁️</div>
+      <div class="cat-name">DevOps</div>
+      <div class="cat-check">✓</div>
+    </div>
+    <div class="cat-item" onclick="this.classList.toggle('on')">
+      <div class="cat-icon">🎨</div>
+      <div class="cat-name">Design</div>
+      <div class="cat-check">✓</div>
+    </div>
+    <div class="cat-item" onclick="this.classList.toggle('on')">
+      <div class="cat-icon">₿</div>
+      <div class="cat-name">Crypto</div>
+      <div class="cat-check">✓</div>
+    </div>
+    <div class="cat-item" onclick="this.classList.toggle('on')">
+      <div class="cat-icon">📣</div>
+      <div class="cat-name">Marketing</div>
+      <div class="cat-check">✓</div>
+    </div>
+    <div class="cat-item" onclick="this.classList.toggle('on')">
+      <div class="cat-icon">🚀</div>
+      <div class="cat-name">Founders</div>
+      <div class="cat-check">✓</div>
+    </div>
+  </div>
+  <div class="cat-hint">Toggle categories to customize your feed. Selected categories appear in your home feed chips.</div>
+
+  <!-- Appearance -->
+  <div class="sec-label">APPEARANCE</div>
+  <div class="theme-row">
+    <div class="theme-opt" onclick="selTheme(this)"><div class="t-icon">📱</div><div class="t-label">System</div></div>
+    <div class="theme-opt" onclick="selTheme(this)"><div class="t-icon">☀️</div><div class="t-label">Light</div></div>
+    <div class="theme-opt on" onclick="selTheme(this)"><div class="t-icon">🌙</div><div class="t-label">Dark</div></div>
+  </div>
+
+  <!-- Quick actions -->
+  <div class="sec-label">QUICK ACTIONS</div>
+  <div class="qa-row">
+    <a href="app-feed.html" class="qa" style="text-decoration:none;color:inherit">
+      <div class="qa-icon">🔖</div>
+      <div class="qa-label">Bookmarks</div>
+    </a>
+    <div class="qa">
+      <div class="qa-icon">📧</div>
+      <div class="qa-label">Subscribe</div>
+    </div>
+  </div>
+
+  <!-- About -->
+  <div class="sec-label">ABOUT</div>
+  <div class="settings-group">
+    <div class="s-row">
+      <span class="s-icon">ℹ️</span>
+      <span class="s-label">App Version</span>
+      <span class="s-value">1.0.0</span>
+    </div>
+    <div class="s-div"></div>
+    <div class="s-row">
+      <span class="s-icon">🌐</span>
+      <span class="s-label">Visit TLDR</span>
+      <span class="s-arrow">›</span>
+    </div>
+    <div class="s-div"></div>
+    <div class="s-row">
+      <span class="s-icon">🔒</span>
+      <span class="s-label">Privacy Policy</span>
+      <span class="s-arrow">›</span>
+    </div>
+    <div class="s-div"></div>
+    <div class="s-row">
+      <span class="s-icon">📄</span>
+      <span class="s-label">Terms of Service</span>
+      <span class="s-arrow">›</span>
+    </div>
+  </div>
+
+  <div class="footer">
+    <div class="footer-logo"><b>TLDR</b><span>News</span></div>
+    <div class="footer-sub">Tech news, simplified.</div>
+  </div>
+
+  <div class="end"></div>
+</div>
+
+<div class="nav">
+  <a href="app-feed.html" class="ni">⚡</a>
+  <a href="app-videos.html" class="ni">▶️</a>
+  <a href="app-premium.html" class="ni">✨</a>
+  <a href="app-settings.html" class="ni on">⚙️ <span>More</span></a>
+</div>
+
+<script>
+function selTheme(el){document.querySelectorAll('.theme-opt').forEach(t=>t.classList.remove('on'));el.classList.add('on')}
+</script>
+</body>
+</html>

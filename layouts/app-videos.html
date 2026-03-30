@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TLDR — Watch</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',sans-serif;background:#0A0D1F;color:#fff;-webkit-font-smoothing:antialiased}
+.c{max-width:480px;margin:0 auto}
+
+.hdr{position:sticky;top:0;z-index:100;backdrop-filter:blur(24px);background:rgba(10,13,31,0.92);padding:14px 16px;display:flex;align-items:center;gap:10px;border-bottom:1px solid rgba(255,255,255,0.04)}
+.hdr-icon{width:30px;height:30px;border-radius:10px;background:linear-gradient(135deg,#FF6B6B,#EE5A24);display:grid;place-items:center;font-size:13px;color:white}
+.hdr-title{font-family:'Space Grotesk';font-weight:700;font-size:18px;flex:1}
+
+/* Channel chips */
+.chs{display:flex;gap:6px;padding:12px 16px;overflow-x:auto;scrollbar-width:none}
+.chs::-webkit-scrollbar{display:none}
+.ch{padding:6px 12px;border-radius:12px;font-size:11px;font-weight:600;cursor:pointer;white-space:nowrap;background:rgba(255,255,255,0.04);color:#4B5563;border:1px solid rgba(255,255,255,0.04);transition:all .2s;user-select:none}
+.ch.on{color:#fff;border-color:transparent}
+
+/* Video card — uses same card DNA as feed */
+.vid{margin:6px 16px;border-radius:18px;background:#161933;border:1px solid rgba(255,255,255,0.04);overflow:hidden;cursor:pointer;transition:border-color .15s}
+.vid:hover{border-color:rgba(255,255,255,0.08)}
+
+.thumb{aspect-ratio:16/9;position:relative;overflow:hidden}
+.thumb-bg{width:100%;height:100%;position:absolute;top:0;left:0}
+.thumb-play{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:48px;height:48px;border-radius:50%;background:rgba(255,255,255,0.12);border:2px solid rgba(255,255,255,0.25);display:grid;place-items:center;font-size:20px}
+.thumb-dur{position:absolute;bottom:10px;right:10px;padding:3px 8px;border-radius:8px;background:rgba(0,0,0,0.6);font-family:'JetBrains Mono';font-size:10px;font-weight:600;letter-spacing:.5px}
+.thumb-ch{position:absolute;top:10px;left:10px;padding:4px 8px;border-radius:10px;background:rgba(0,0,0,0.4);font-size:10px;font-weight:700;letter-spacing:.5px;display:flex;align-items:center;gap:4px}
+
+.vid-body{padding:14px 16px}
+.vid-title{font-size:14px;font-weight:700;line-height:1.35;letter-spacing:-.15px;margin-bottom:6px;color:#E5E7EB}
+.vid-meta{display:flex;align-items:center;gap:6px;font-size:10px;color:#4B5563}
+.vid-meta .dot{width:2.5px;height:2.5px;border-radius:50%;background:#374151}
+.vid-meta strong{color:#6B7280;font-weight:600}
+
+/* Expand summary */
+.vid-summary{font-size:12px;line-height:1.5;color:#4B5563;margin-top:6px;display:none}
+.vid-summary.show{display:block}
+.vid-expand{display:flex;align-items:center;gap:4px;font-size:10px;font-weight:600;color:#FF6B6B;cursor:pointer;margin-top:6px}
+.vid-expand .arrow{transition:transform .2s;display:inline-block;font-size:8px}
+.vid-expand .arrow.open{transform:rotate(90deg)}
+
+.nav{position:fixed;bottom:14px;left:50%;transform:translateX(-50%);width:calc(100% - 32px);max-width:448px;backdrop-filter:blur(24px);background:rgba(22,25,51,0.88);border-radius:22px;padding:8px 6px;display:flex;justify-content:space-evenly;box-shadow:0 8px 32px rgba(0,0,0,0.5);border:1px solid rgba(255,255,255,0.06)}
+.ni{padding:7px 11px;border-radius:16px;font-size:16px;cursor:pointer;display:flex;align-items:center;gap:5px;color:#374151;transition:all .2s;text-decoration:none}
+.ni.on{color:#FF6B6B;background:rgba(255,107,107,0.1)}
+.ni span{font-size:11px;font-weight:700;display:none;letter-spacing:.3px}
+.ni.on span{display:inline}
+.end{height:90px}
+</style>
+</head>
+<body>
+<div class="c">
+  <div class="hdr">
+    <div class="hdr-icon">▶</div>
+    <div class="hdr-title">Watch</div>
+  </div>
+
+  <div class="chs">
+    <div class="ch on" style="background:#FF6B6B">All</div>
+    <div class="ch">🌐 Global</div>
+    <div class="ch">🇬🇧 UK</div>
+    <div class="ch">🇪🇺 EU</div>
+    <div class="ch">🇺🇸 US</div>
+    <div class="ch">🌍 Africa</div>
+    <div class="ch">📰 Daily</div>
+  </div>
+
+  <!-- Featured video -->
+  <div class="vid">
+    <div class="thumb">
+      <div class="thumb-bg" style="background:linear-gradient(135deg,#0F3460,#5B8DEF)"></div>
+      <div class="thumb-ch">🌐 TLDR</div>
+      <div class="thumb-play">▶</div>
+      <div class="thumb-dur">12:34</div>
+    </div>
+    <div class="vid-body">
+      <div class="vid-title">OpenAI Just Changed Everything With GPT-5</div>
+      <div class="vid-meta"><strong>@TLDRGlobal</strong><span class="dot"></span>284K views<span class="dot"></span>2h ago</div>
+      <div class="vid-summary" id="v1">We break down GPT-5's new capabilities including real-time video understanding, improved reasoning, and what it means for developers and businesses.</div>
+      <div class="vid-expand" onclick="toggleV('v1',this)"><span class="arrow">▶</span> Description</div>
+    </div>
+  </div>
+
+  <!-- EU video -->
+  <div class="vid">
+    <div class="thumb">
+      <div class="thumb-bg" style="background:linear-gradient(135deg,#003399,#0055DD,rgba(255,204,0,0.3))"></div>
+      <div class="thumb-ch">🇪🇺 EU</div>
+      <div class="thumb-play">▶</div>
+      <div class="thumb-dur">16:08</div>
+    </div>
+    <div class="vid-body">
+      <div class="vid-title">EU AI Act Is Now In Effect — What Changes</div>
+      <div class="vid-meta"><strong>@TLDREU</strong><span class="dot"></span>132K views<span class="dot"></span>3h ago</div>
+      <div class="vid-summary" id="v2">The EU AI Act is officially being enforced. We explain risk tiers, banned systems, compliance deadlines, and what companies in Europe need to do now.</div>
+      <div class="vid-expand" onclick="toggleV('v2',this)"><span class="arrow">▶</span> Description</div>
+    </div>
+  </div>
+
+  <!-- US video -->
+  <div class="vid">
+    <div class="thumb">
+      <div class="thumb-bg" style="background:linear-gradient(135deg,#8B0000,#CD5C5C)"></div>
+      <div class="thumb-ch">🇺🇸 US</div>
+      <div class="thumb-play">▶</div>
+      <div class="thumb-dur">13:17</div>
+    </div>
+    <div class="vid-body">
+      <div class="vid-title">Congress Just Passed a Major Tech Bill</div>
+      <div class="vid-meta"><strong>@TLDRUS</strong><span class="dot"></span>215K views<span class="dot"></span>5h ago</div>
+      <div class="vid-summary" id="v3">A sweeping tech bill covers data privacy, AI oversight, and social media for minors. We break down every provision and what it means.</div>
+      <div class="vid-expand" onclick="toggleV('v3',this)"><span class="arrow">▶</span> Description</div>
+    </div>
+  </div>
+
+  <!-- Africa video -->
+  <div class="vid">
+    <div class="thumb">
+      <div class="thumb-bg" style="background:linear-gradient(135deg,#2E7D32,#66BB6A)"></div>
+      <div class="thumb-ch">🌍 Africa</div>
+      <div class="thumb-play">▶</div>
+      <div class="thumb-dur">12:56</div>
+    </div>
+    <div class="vid-body">
+      <div class="vid-title">Africa's Fintech Boom Is Just Getting Started</div>
+      <div class="vid-meta"><strong>@TLDRAfrica</strong><span class="dot"></span>45K views<span class="dot"></span>8h ago</div>
+      <div class="vid-summary" id="v4">African fintech raised $3.2B last year. We look at the biggest players, emerging markets, and why global investors are paying attention.</div>
+      <div class="vid-expand" onclick="toggleV('v4',this)"><span class="arrow">▶</span> Description</div>
+    </div>
+  </div>
+
+  <div class="end"></div>
+</div>
+
+<div class="nav">
+  <a href="app-feed.html" class="ni">⚡</a>
+  <a href="app-videos.html" class="ni on">▶️ <span>Watch</span></a>
+  <a href="app-premium.html" class="ni">✨</a>
+  <a href="app-settings.html" class="ni">⚙️</a>
+</div>
+
+<script>
+function toggleV(id,btn){document.getElementById(id).classList.toggle('show');btn.querySelector('.arrow').classList.toggle('open')}
+document.querySelectorAll('.ch').forEach(c=>{c.addEventListener('click',()=>{document.querySelectorAll('.ch').forEach(x=>{x.classList.remove('on');x.style.background=''});c.classList.add('on');c.style.background='#FF6B6B'})});
+</script>
+</body>
+</html>
