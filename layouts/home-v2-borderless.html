@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TLDR — Home v2: Borderless</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',sans-serif;background:#0A0D1F;color:#fff;-webkit-font-smoothing:antialiased}
+.c{max-width:480px;margin:0 auto}
+
+.hdr{position:sticky;top:0;z-index:100;backdrop-filter:blur(24px);background:rgba(10,13,31,0.92);padding:16px;display:flex;align-items:center;justify-content:space-between}
+.logo{display:flex;align-items:center;gap:8px}
+.logo b{background:linear-gradient(135deg,#6C5CE7,#A78BFA);color:#fff;font-family:'Space Grotesk';font-weight:900;font-size:12px;letter-spacing:1.5px;padding:5px 8px;border-radius:7px}
+.logo span{font-family:'Space Grotesk';font-weight:700;font-size:18px}
+.hdr-r{display:flex;gap:6px}
+.ib{width:36px;height:36px;border-radius:12px;background:rgba(255,255,255,0.05);border:none;display:grid;place-items:center;font-size:15px;cursor:pointer;color:#6B7280}
+
+/* No cards — just divider lines between items. Cleaner. */
+.item{padding:14px 20px;border-bottom:1px solid rgba(255,255,255,0.04);cursor:pointer;display:flex;gap:14px;transition:background .15s}
+.item:hover{background:rgba(255,255,255,0.02)}
+.bar{width:3px;border-radius:3px;flex-shrink:0;align-self:stretch}
+.body{flex:1;min-width:0}
+.meta{display:flex;align-items:center;gap:7px;margin-bottom:4px}
+.cat{font-family:'JetBrains Mono';font-size:9px;font-weight:700;letter-spacing:1.2px}
+.dot{width:2.5px;height:2.5px;border-radius:50%;background:#374151}
+.mu{font-size:10px;color:#4B5563;font-weight:500}
+h3{font-size:14px;font-weight:700;line-height:1.4;letter-spacing:-.15px;margin-bottom:3px;color:#D1D5DB}
+.src{font-size:10px;font-weight:600;color:#374151}
+
+/* Section dividers — just text, ultra minimal */
+.sec{padding:20px 20px 6px;display:flex;align-items:center;gap:8px}
+.sec-emoji{font-size:13px}
+.sec-t{font-family:'JetBrains Mono';font-size:10px;font-weight:600;letter-spacing:1.5px;color:#374151;text-transform:uppercase}
+.sec-line{flex:1;height:1px;background:rgba(255,255,255,0.04)}
+
+.date-row{padding:10px 20px;display:flex;align-items:center;gap:8px}
+.dp{font-family:'JetBrains Mono';font-size:10px;font-weight:600;color:#6C5CE7;letter-spacing:.5px}
+.dt{font-size:10px;color:#374151}
+
+.nav{position:fixed;bottom:14px;left:50%;transform:translateX(-50%);width:calc(100% - 32px);max-width:448px;backdrop-filter:blur(24px);background:rgba(22,25,51,0.88);border-radius:22px;padding:8px 6px;display:flex;justify-content:space-evenly;box-shadow:0 8px 32px rgba(0,0,0,0.5);border:1px solid rgba(255,255,255,0.06)}
+.ni{padding:7px 11px;border-radius:16px;font-size:16px;cursor:pointer;display:flex;align-items:center;gap:5px;color:#374151;transition:all .2s}
+.ni.on{color:#6C5CE7;background:rgba(108,92,231,0.1)}
+.ni span{font-size:11px;font-weight:700;display:none}
+.ni.on span{display:inline}
+.end{height:90px}
+</style>
+</head>
+<body>
+<div class="c">
+  <div class="hdr">
+    <div class="logo"><b>TLDR</b><span>News</span></div>
+    <div class="hdr-r"><div class="ib">🔍</div><div class="ib">🔖</div></div>
+  </div>
+
+  <div class="date-row"><span class="dp">TODAY</span><span class="dt">· March 30, 2026</span></div>
+
+  <div class="sec"><span class="sec-emoji">📰</span><span class="sec-t">Headlines</span><span class="sec-line"></span></div>
+
+  <div class="item">
+    <div class="bar" style="background:#9C27B0"></div>
+    <div class="body">
+      <div class="meta"><span class="cat" style="color:#9C27B0">AI</span><span class="dot"></span><span class="mu">4 min</span><span style="flex:1"></span><span class="mu">2h</span></div>
+      <h3>OpenAI Launches GPT-5 With Real-Time Reasoning</h3>
+      <div class="src">TechCrunch</div>
+    </div>
+  </div>
+
+  <div class="item">
+    <div class="bar" style="background:#9C27B0"></div>
+    <div class="body">
+      <div class="meta"><span class="cat" style="color:#9C27B0">AI</span><span class="dot"></span><span class="mu">3 min</span><span style="flex:1"></span><span class="mu">3h</span></div>
+      <h3>Claude 4.5 Achieves New State-of-the-Art on Coding Benchmarks</h3>
+      <div class="src">Anthropic Blog</div>
+    </div>
+  </div>
+
+  <div class="sec"><span class="sec-emoji">🏢</span><span class="sec-t">Big Tech</span><span class="sec-line"></span></div>
+
+  <div class="item">
+    <div class="bar" style="background:#2196F3"></div>
+    <div class="body">
+      <div class="meta"><span class="cat" style="color:#2196F3">TECH</span><span class="dot"></span><span class="mu">3 min</span><span style="flex:1"></span><span class="mu">3h</span></div>
+      <h3>Apple Announces M4 Ultra Chip With 80-Core GPU</h3>
+      <div class="src">The Verge</div>
+    </div>
+  </div>
+
+  <div class="item">
+    <div class="bar" style="background:#2196F3"></div>
+    <div class="body">
+      <div class="meta"><span class="cat" style="color:#2196F3">TECH</span><span class="dot"></span><span class="mu">3 min</span><span style="flex:1"></span><span class="mu">5h</span></div>
+      <h3>GitHub Copilot Now Writes Entire Pull Requests</h3>
+      <div class="src">GitHub Blog</div>
+    </div>
+  </div>
+
+  <div class="sec"><span class="sec-emoji">🔬</span><span class="sec-t">Science</span><span class="sec-line"></span></div>
+
+  <div class="item">
+    <div class="bar" style="background:#00BCD4"></div>
+    <div class="body">
+      <div class="meta"><span class="cat" style="color:#00BCD4">SCIENCE</span><span class="dot"></span><span class="mu">3 min</span><span style="flex:1"></span><span class="mu">4h</span></div>
+      <h3>SpaceX Starship Completes First Orbital Cargo Mission</h3>
+      <div class="src">Space.com</div>
+    </div>
+  </div>
+
+  <div class="item">
+    <div class="bar" style="background:#00BCD4"></div>
+    <div class="body">
+      <div class="meta"><span class="cat" style="color:#00BCD4">SCIENCE</span><span class="dot"></span><span class="mu">4 min</span><span style="flex:1"></span><span class="mu">6h</span></div>
+      <h3>Quantum Computer Solves Real-World Optimization Problem</h3>
+      <div class="src">MIT Technology Review</div>
+    </div>
+  </div>
+
+  <div class="sec"><span class="sec-emoji">💻</span><span class="sec-t">Programming</span><span class="sec-line"></span></div>
+
+  <div class="item">
+    <div class="bar" style="background:#4CAF50"></div>
+    <div class="body">
+      <div class="meta"><span class="cat" style="color:#4CAF50">DEV</span><span class="dot"></span><span class="mu">5 min</span><span style="flex:1"></span><span class="mu">5h</span></div>
+      <h3>Rust 2.0 Released With Major Ergonomic Improvements</h3>
+      <div class="src">Rust Blog</div>
+    </div>
+  </div>
+
+  <div class="item">
+    <div class="bar" style="background:#4CAF50"></div>
+    <div class="body">
+      <div class="meta"><span class="cat" style="color:#4CAF50">DEV</span><span class="dot"></span><span class="mu">3 min</span><span style="flex:1"></span><span class="mu">6h</span></div>
+      <h3>Deno 4.0 Achieves Full Node.js Compatibility</h3>
+      <div class="src">Deno Blog</div>
+    </div>
+  </div>
+
+  <div class="end"></div>
+</div>
+
+<div class="nav">
+  <div class="ni on">⚡ <span>Feed</span></div>
+  <div class="ni">▶️</div>
+  <div class="ni">✨</div>
+  <div class="ni">⚙️</div>
+</div>
+</body>
+</html>

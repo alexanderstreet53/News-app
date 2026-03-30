@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TLDR — Home v5: Dense Ticker</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',sans-serif;background:#0A0D1F;color:#fff;-webkit-font-smoothing:antialiased}
+.c{max-width:480px;margin:0 auto}
+
+.hdr{position:sticky;top:0;z-index:100;backdrop-filter:blur(24px);background:rgba(10,13,31,0.92);padding:14px 16px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,0.04)}
+.logo{display:flex;align-items:center;gap:8px}
+.logo b{background:linear-gradient(135deg,#6C5CE7,#A78BFA);color:#fff;font-family:'Space Grotesk';font-weight:900;font-size:12px;letter-spacing:1.5px;padding:5px 8px;border-radius:7px}
+.logo span{font-family:'Space Grotesk';font-weight:700;font-size:18px}
+.hdr-r{display:flex;gap:6px}
+.ib{width:36px;height:36px;border-radius:12px;background:rgba(255,255,255,0.05);border:none;display:grid;place-items:center;font-size:15px;cursor:pointer;color:#6B7280}
+
+/* Info-dense: category color on left, title only, source right-aligned — like a stock ticker */
+.sec{padding:16px 16px 4px;font-family:'JetBrains Mono';font-size:9px;font-weight:600;letter-spacing:1.5px;color:#374151;text-transform:uppercase}
+
+.row{display:flex;align-items:center;gap:10px;padding:11px 16px;border-bottom:1px solid rgba(255,255,255,0.03);cursor:pointer;transition:background .1s}
+.row:hover{background:rgba(255,255,255,0.02)}
+.row-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.row-title{flex:1;font-size:13px;font-weight:600;line-height:1.35;color:#D1D5DB;letter-spacing:-.1px}
+.row-right{display:flex;flex-direction:column;align-items:flex-end;gap:2px;flex-shrink:0}
+.row-src{font-size:9px;font-weight:600;color:#374151;font-family:'JetBrains Mono';letter-spacing:.5px}
+.row-time{font-size:9px;color:#282D45}
+
+.nav{position:fixed;bottom:14px;left:50%;transform:translateX(-50%);width:calc(100% - 32px);max-width:448px;backdrop-filter:blur(24px);background:rgba(22,25,51,0.88);border-radius:22px;padding:8px 6px;display:flex;justify-content:space-evenly;box-shadow:0 8px 32px rgba(0,0,0,0.5);border:1px solid rgba(255,255,255,0.06)}
+.ni{padding:7px 11px;border-radius:16px;font-size:16px;cursor:pointer;display:flex;align-items:center;gap:5px;color:#374151}
+.ni.on{color:#6C5CE7;background:rgba(108,92,231,0.1)}
+.ni span{font-size:11px;font-weight:700;display:none}
+.ni.on span{display:inline}
+.end{height:90px}
+</style>
+</head>
+<body>
+<div class="c">
+  <div class="hdr">
+    <div class="logo"><b>TLDR</b><span>News</span></div>
+    <div class="hdr-r"><div class="ib">🔍</div><div class="ib">🔖</div></div>
+  </div>
+
+  <div class="sec">📰 Headlines</div>
+  <div class="row"><div class="row-dot" style="background:#9C27B0"></div><div class="row-title">OpenAI Launches GPT-5 With Real-Time Reasoning</div><div class="row-right"><span class="row-src">TECHCRUNCH</span><span class="row-time">2h</span></div></div>
+  <div class="row"><div class="row-dot" style="background:#9C27B0"></div><div class="row-title">Claude 4.5 Achieves New State-of-the-Art on Coding Benchmarks</div><div class="row-right"><span class="row-src">ANTHROPIC</span><span class="row-time">3h</span></div></div>
+  <div class="row"><div class="row-dot" style="background:#9C27B0"></div><div class="row-title">Open-Source LLM Llama 4 Matches GPT-4 Performance</div><div class="row-right"><span class="row-src">META AI</span><span class="row-time">1d</span></div></div>
+
+  <div class="sec">🏢 Big Tech & Startups</div>
+  <div class="row"><div class="row-dot" style="background:#2196F3"></div><div class="row-title">Apple Announces M4 Ultra Chip With 80-Core GPU</div><div class="row-right"><span class="row-src">THE VERGE</span><span class="row-time">3h</span></div></div>
+  <div class="row"><div class="row-dot" style="background:#2196F3"></div><div class="row-title">GitHub Copilot Now Writes Entire Pull Requests</div><div class="row-right"><span class="row-src">GITHUB</span><span class="row-time">5h</span></div></div>
+
+  <div class="sec">🔬 Science & Futuristic Tech</div>
+  <div class="row"><div class="row-dot" style="background:#00BCD4"></div><div class="row-title">SpaceX Starship Completes First Orbital Cargo Mission</div><div class="row-right"><span class="row-src">SPACE.COM</span><span class="row-time">4h</span></div></div>
+  <div class="row"><div class="row-dot" style="background:#00BCD4"></div><div class="row-title">Quantum Computer Solves Real-World Optimization Problem</div><div class="row-right"><span class="row-src">MIT TECH</span><span class="row-time">6h</span></div></div>
+
+  <div class="sec">💻 Programming & Dev</div>
+  <div class="row"><div class="row-dot" style="background:#4CAF50"></div><div class="row-title">Rust 2.0 Released With Major Ergonomic Improvements</div><div class="row-right"><span class="row-src">RUST BLOG</span><span class="row-time">5h</span></div></div>
+  <div class="row"><div class="row-dot" style="background:#4CAF50"></div><div class="row-title">Deno 4.0 Achieves Full Node.js Compatibility</div><div class="row-right"><span class="row-src">DENO</span><span class="row-time">6h</span></div></div>
+  <div class="row"><div class="row-dot" style="background:#4CAF50"></div><div class="row-title">React Server Components Now Supported in All Major Frameworks</div><div class="row-right"><span class="row-src">REACT</span><span class="row-time">7h</span></div></div>
+
+  <div class="sec">🔒 InfoSec</div>
+  <div class="row"><div class="row-dot" style="background:#E91E63"></div><div class="row-title">Critical Vulnerability Found in Popular Authentication Library</div><div class="row-right"><span class="row-src">BLEEPING</span><span class="row-time">1h</span></div></div>
+  <div class="row"><div class="row-dot" style="background:#E91E63"></div><div class="row-title">NIST Releases Post-Quantum Cryptography Standards</div><div class="row-right"><span class="row-src">NIST</span><span class="row-time">1d</span></div></div>
+
+  <div class="sec">📌 Misc</div>
+  <div class="row"><div class="row-dot" style="background:#FF9800"></div><div class="row-title">Stack Overflow Survey: Rust Most Loved Language 9th Year Running</div><div class="row-right"><span class="row-src">SO</span><span class="row-time">8h</span></div></div>
+  <div class="row"><div class="row-dot" style="background:#FF9800"></div><div class="row-title">Linux Kernel 6.12 Released With Real-Time Support</div><div class="row-right"><span class="row-src">LWN</span><span class="row-time">1d</span></div></div>
+
+  <div class="end"></div>
+</div>
+
+<div class="nav">
+  <div class="ni on">⚡ <span>Feed</span></div>
+  <div class="ni">▶️</div>
+  <div class="ni">✨</div>
+  <div class="ni">⚙️</div>
+</div>
+</body>
+</html>
