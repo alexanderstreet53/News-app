@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TLDR News — Search</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Inter', sans-serif; background: #0A0D1F; color: #fff; }
+  .container { max-width: 480px; margin: 0 auto; }
+
+  .search-bar {
+    display: flex; align-items: center; gap: 12px;
+    padding: 16px; position: sticky; top: 0; z-index: 100;
+    background: rgba(10,13,31,0.95); backdrop-filter: blur(24px);
+  }
+  .back-btn {
+    width: 38px; height: 38px; border-radius: 14px;
+    background: rgba(255,255,255,0.06); border: none;
+    display: grid; place-items: center; font-size: 16px; cursor: pointer;
+  }
+  .search-input {
+    flex: 1; height: 44px; border-radius: 16px; padding: 0 16px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.08);
+    color: white; font-family: 'Inter'; font-size: 15px;
+    outline: none;
+  }
+  .search-input::placeholder { color: #6B7280; }
+  .search-input:focus {
+    border-color: rgba(108,92,231,0.4);
+    background: rgba(108,92,231,0.08);
+  }
+  .clear-btn {
+    width: 38px; height: 38px; border-radius: 14px;
+    background: rgba(255,255,255,0.06); border: none;
+    display: grid; place-items: center; font-size: 14px; cursor: pointer;
+  }
+
+  .results-count {
+    padding: 8px 16px 12px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .results-pill {
+    padding: 4px 10px; border-radius: 12px;
+    background: rgba(108,92,231,0.12);
+    font-family: 'JetBrains Mono'; font-size: 10px;
+    font-weight: 600; color: #6C5CE7;
+  }
+  .results-text { font-size: 12px; color: #6B7280; }
+
+  .compact {
+    margin: 5px 16px; padding: 16px; border-radius: 22px;
+    background: #161933; display: flex; gap: 14px;
+    border: 1px solid rgba(255,255,255,0.04);
+  }
+  .accent-bar { width: 4px; min-height: 64px; border-radius: 4px; }
+  .compact-body { flex: 1; }
+  .compact-meta { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; font-size: 10px; font-weight: 800; letter-spacing: 1px; }
+  .compact-meta .dot { width: 3px; height: 3px; border-radius: 50%; background: #4B5563; }
+  .compact-meta .muted { font-weight: 500; color: #9CA3AF; letter-spacing: 0; }
+  .compact h3 { font-size: 15px; font-weight: 700; line-height: 1.35; margin-bottom: 6px; }
+  .compact .highlight { background: rgba(108,92,231,0.2); padding: 1px 3px; border-radius: 3px; color: #A78BFA; }
+  .compact-source { font-size: 11px; font-weight: 600; color: #9CA3AF; }
+</style>
+</head>
+<body>
+  <div class="container">
+    <div class="search-bar">
+      <button class="back-btn">←</button>
+      <input class="search-input" placeholder="Search TLDR articles..." value="quantum">
+      <button class="clear-btn">✕</button>
+    </div>
+
+    <div class="results-count">
+      <span class="results-pill">2 RESULTS</span>
+      <span class="results-text">for "quantum"</span>
+    </div>
+
+    <div class="compact">
+      <div class="accent-bar" style="background:#2196F3"></div>
+      <div class="compact-body">
+        <div class="compact-meta">
+          <span style="color:#2196F3">TECH</span>
+          <span class="dot"></span><span class="muted">4 min</span>
+          <span style="flex:1"></span><span class="muted">6h ago</span>
+        </div>
+        <h3>Breakthrough: <span class="highlight">Quantum</span> Computer Solves Real-World Optimization Problem</h3>
+        <div class="compact-source">MIT Technology Review</div>
+      </div>
+    </div>
+
+    <div class="compact">
+      <div class="accent-bar" style="background:#E91E63"></div>
+      <div class="compact-body">
+        <div class="compact-meta">
+          <span style="color:#E91E63">INFOSEC</span>
+          <span class="dot"></span><span class="muted">4 min</span>
+          <span style="flex:1"></span><span class="muted">1d ago</span>
+        </div>
+        <h3>NIST Releases Post-<span class="highlight">Quantum</span> Cryptography Standards</h3>
+        <div class="compact-source">NIST</div>
+      </div>
+    </div>
+
+    <div style="text-align:center;padding:48px 32px;">
+      <div style="font-size:32px;margin-bottom:12px;opacity:0.3">🔍</div>
+      <div style="font-size:13px;color:#6B7280">End of results</div>
+    </div>
+  </div>
+</body>
+</html>

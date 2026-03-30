@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TLDR News — Bookmarks</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Inter', sans-serif; background: #0A0D1F; color: #fff; }
+  .container { max-width: 480px; margin: 0 auto; }
+
+  .app-bar {
+    padding: 16px 16px 0; display: flex; align-items: center; justify-content: space-between;
+  }
+  .bar-back {
+    width: 38px; height: 38px; border-radius: 14px;
+    background: rgba(255,255,255,0.06); border: none;
+    display: grid; place-items: center; font-size: 16px; cursor: pointer;
+  }
+  .bar-title { font-family: 'Space Grotesk'; font-size: 22px; font-weight: 700; flex: 1; text-align: center; }
+
+  .count-badge {
+    margin: 16px 16px 12px; display: inline-flex; align-items: center; gap: 6px;
+    padding: 6px 12px; border-radius: 20px;
+    background: rgba(108,92,231,0.12); border: 1px solid rgba(108,92,231,0.15);
+  }
+  .count-text { font-family: 'JetBrains Mono'; font-size: 11px; font-weight: 600; color: #6C5CE7; }
+
+  .compact {
+    margin: 5px 16px; padding: 16px; border-radius: 22px;
+    background: #161933; display: flex; gap: 14px;
+    border: 1px solid rgba(255,255,255,0.04);
+    position: relative; overflow: hidden;
+  }
+  .swipe-hint {
+    position: absolute; top: 0; right: 0; bottom: 0; width: 60px;
+    background: linear-gradient(90deg, transparent, rgba(255,107,107,0.08));
+    display: grid; place-items: center;
+  }
+  .swipe-hint span { font-size: 16px; opacity: 0.4; }
+  .accent-bar { width: 4px; min-height: 64px; border-radius: 4px; flex-shrink: 0; }
+  .compact-body { flex: 1; }
+  .compact-meta {
+    display: flex; align-items: center; gap: 8px; margin-bottom: 6px;
+    font-size: 10px; font-weight: 800; letter-spacing: 1px;
+  }
+  .compact-meta .dot { width: 3px; height: 3px; border-radius: 50%; background: #4B5563; }
+  .compact-meta .muted { font-weight: 500; color: #9CA3AF; letter-spacing: 0; }
+  .compact h3 { font-size: 15px; font-weight: 700; line-height: 1.35; letter-spacing: -0.2px; margin-bottom: 6px; }
+  .compact-footer { display: flex; align-items: center; }
+  .compact-source { font-size: 11px; font-weight: 600; color: #9CA3AF; flex: 1; }
+  .bookmark-active { font-size: 16px; cursor: pointer; }
+</style>
+</head>
+<body>
+  <div class="container">
+    <div class="app-bar">
+      <button class="bar-back">←</button>
+      <div class="bar-title">Bookmarks</div>
+      <button class="bar-back">🗑</button>
+    </div>
+
+    <div class="count-badge">
+      <span class="count-text">4 SAVED</span>
+    </div>
+
+    <div class="compact">
+      <div class="accent-bar" style="background:#9C27B0"></div>
+      <div class="compact-body">
+        <div class="compact-meta">
+          <span style="color:#9C27B0">AI</span>
+          <span class="dot"></span><span class="muted">4 min</span>
+          <span style="flex:1"></span><span class="muted">2h ago</span>
+        </div>
+        <h3>OpenAI Launches GPT-5 With Real-Time Reasoning</h3>
+        <div class="compact-footer">
+          <span class="compact-source">TechCrunch</span>
+          <span class="bookmark-active" style="color:#FF6B6B">🔖</span>
+        </div>
+      </div>
+      <div class="swipe-hint"><span>×</span></div>
+    </div>
+
+    <div class="compact">
+      <div class="accent-bar" style="background:#2196F3"></div>
+      <div class="compact-body">
+        <div class="compact-meta">
+          <span style="color:#2196F3">TECH</span>
+          <span class="dot"></span><span class="muted">3 min</span>
+          <span style="flex:1"></span><span class="muted">3h ago</span>
+        </div>
+        <h3>Apple Announces M4 Ultra Chip With 80-Core GPU</h3>
+        <div class="compact-footer">
+          <span class="compact-source">The Verge</span>
+          <span class="bookmark-active" style="color:#FF6B6B">🔖</span>
+        </div>
+      </div>
+      <div class="swipe-hint"><span>×</span></div>
+    </div>
+
+    <div class="compact">
+      <div class="accent-bar" style="background:#4CAF50"></div>
+      <div class="compact-body">
+        <div class="compact-meta">
+          <span style="color:#4CAF50">WEB DEV</span>
+          <span class="dot"></span><span class="muted">5 min</span>
+          <span style="flex:1"></span><span class="muted">5h ago</span>
+        </div>
+        <h3>Rust 2.0 Released With Major Ergonomic Improvements</h3>
+        <div class="compact-footer">
+          <span class="compact-source">Rust Blog</span>
+          <span class="bookmark-active" style="color:#FF6B6B">🔖</span>
+        </div>
+      </div>
+      <div class="swipe-hint"><span>×</span></div>
+    </div>
+
+    <div class="compact">
+      <div class="accent-bar" style="background:#E91E63"></div>
+      <div class="compact-body">
+        <div class="compact-meta">
+          <span style="color:#E91E63">INFOSEC</span>
+          <span class="dot"></span><span class="muted">4 min</span>
+          <span style="flex:1"></span><span class="muted">1d ago</span>
+        </div>
+        <h3>NIST Releases Post-Quantum Cryptography Standards</h3>
+        <div class="compact-footer">
+          <span class="compact-source">NIST</span>
+          <span class="bookmark-active" style="color:#FF6B6B">🔖</span>
+        </div>
+      </div>
+      <div class="swipe-hint"><span>×</span></div>
+    </div>
+  </div>
+</body>
+</html>

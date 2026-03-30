@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TLDR News — Editorial Feed</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --brand: #0A0E27;
+    --accent: #6C5CE7;
+    --coral: #FF6B6B;
+    --cyan: #00D2D3;
+    --gold: #FFD93D;
+    --bg: #F7F7FB;
+    --card: #FFFFFF;
+    --muted: #6B7280;
+    --border: rgba(0,0,0,0.04);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--brand); min-height: 100vh; }
+
+  .container { max-width: 480px; margin: 0 auto; padding: 0 16px; }
+
+  /* App bar */
+  .app-bar {
+    position: sticky; top: 0; z-index: 100;
+    backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+    background: rgba(247,247,251,0.85);
+    padding: 16px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .logo { display: flex; align-items: center; gap: 8px; }
+  .logo-badge {
+    background: linear-gradient(135deg, #6C5CE7, #A78BFA);
+    color: white; font-family: 'Space Grotesk', sans-serif;
+    font-weight: 900; font-size: 13px; letter-spacing: 1px;
+    padding: 5px 9px; border-radius: 8px;
+  }
+  .logo-text { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 20px; }
+  .bar-actions { display: flex; gap: 8px; }
+  .bar-btn {
+    width: 38px; height: 38px; border-radius: 14px;
+    background: rgba(0,0,0,0.04); border: none; cursor: pointer;
+    display: grid; place-items: center; font-size: 18px; color: #6B7280;
+  }
+
+  /* Category chips */
+  .chips { display: flex; gap: 6px; padding: 8px 16px 16px; overflow-x: auto; scrollbar-width: none; }
+  .chips::-webkit-scrollbar { display: none; }
+  .chip {
+    padding: 8px 14px; border-radius: 16px; white-space: nowrap;
+    font-size: 12px; font-weight: 500; cursor: pointer;
+    background: rgba(0,0,0,0.04); color: #6B7280;
+    border: 1px solid rgba(0,0,0,0.04); transition: all 0.2s;
+  }
+  .chip.active { background: var(--accent); color: white; border-color: transparent; font-weight: 700; }
+
+  /* Hero card */
+  .hero {
+    margin: 0 16px 12px; border-radius: 28px; padding: 24px;
+    background: linear-gradient(135deg, #6C5CE7, #4834B0);
+    color: white; position: relative; overflow: hidden;
+    box-shadow: 0 12px 32px rgba(108,92,231,0.35);
+  }
+  .hero::before {
+    content: ''; position: absolute; top: -30px; right: -30px;
+    width: 120px; height: 120px; border-radius: 50%;
+    background: rgba(255,255,255,0.06);
+  }
+  .hero::after {
+    content: ''; position: absolute; bottom: -20px; left: 40px;
+    width: 80px; height: 80px; border-radius: 50%;
+    background: rgba(255,255,255,0.04);
+  }
+  .hero-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; position: relative; z-index: 1; }
+  .hero-badge {
+    padding: 5px 10px; border-radius: 20px;
+    background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.2);
+    font-size: 10px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase;
+  }
+  .hero-time { font-size: 11px; opacity: 0.6; font-weight: 500; }
+  .hero h2 {
+    font-family: 'Space Grotesk', sans-serif; font-size: 24px;
+    font-weight: 700; line-height: 1.2; letter-spacing: -0.5px;
+    margin-bottom: 12px; position: relative; z-index: 1;
+  }
+  .hero p { font-size: 14px; opacity: 0.75; line-height: 1.5; position: relative; z-index: 1; }
+  .hero-footer { display: flex; align-items: center; gap: 8px; margin-top: 20px; position: relative; z-index: 1; }
+  .glass-pill {
+    padding: 5px 10px; border-radius: 20px;
+    background: rgba(255,255,255,0.12);
+    font-size: 11px; font-weight: 600;
+  }
+  .glass-icon {
+    width: 34px; height: 34px; border-radius: 50%; background: rgba(255,255,255,0.12);
+    display: grid; place-items: center; font-size: 14px; margin-left: auto; cursor: pointer;
+  }
+
+  /* Section header */
+  .section-hdr {
+    display: flex; align-items: center; gap: 12px;
+    padding: 28px 16px 10px;
+  }
+  .section-emoji {
+    width: 40px; height: 40px; border-radius: 14px;
+    background: rgba(0,0,0,0.04); display: grid; place-items: center;
+    font-size: 18px;
+  }
+  .section-title { font-family: 'Space Grotesk', sans-serif; font-size: 18px; font-weight: 700; letter-spacing: -0.3px; flex: 1; }
+  .section-count {
+    padding: 4px 10px; border-radius: 20px;
+    background: rgba(0,0,0,0.04);
+    font-family: 'JetBrains Mono', monospace; font-size: 10px;
+    font-weight: 500; color: var(--muted);
+  }
+
+  /* Compact card */
+  .compact {
+    margin: 5px 16px; padding: 16px; border-radius: 22px;
+    background: white; display: flex; gap: 14px;
+    border: 1px solid rgba(0,0,0,0.03);
+  }
+  .accent-bar { width: 4px; min-height: 64px; border-radius: 4px; flex-shrink: 0; }
+  .compact-body { flex: 1; }
+  .compact-meta {
+    display: flex; align-items: center; gap: 8px; margin-bottom: 6px;
+    font-size: 10px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase;
+  }
+  .compact-meta .dot { width: 3px; height: 3px; border-radius: 50%; background: #D1D5DB; }
+  .compact-meta .muted { font-weight: 500; color: var(--muted); text-transform: none; letter-spacing: 0; }
+  .compact h3 {
+    font-family: 'Inter', sans-serif; font-size: 15px;
+    font-weight: 700; line-height: 1.35; letter-spacing: -0.2px;
+    margin-bottom: 6px;
+  }
+  .compact-source {
+    font-size: 11px; font-weight: 600; color: var(--muted);
+  }
+
+  /* Floating nav */
+  .nav {
+    position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%);
+    width: calc(100% - 40px); max-width: 440px;
+    backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+    background: rgba(255,255,255,0.85);
+    border-radius: 28px; padding: 10px 8px;
+    display: flex; justify-content: space-evenly; align-items: center;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+    border: 1px solid rgba(0,0,0,0.04);
+  }
+  .nav-item {
+    display: flex; align-items: center; gap: 6px;
+    padding: 8px 12px; border-radius: 20px; cursor: pointer;
+    font-size: 12px; font-weight: 700; transition: all 0.25s;
+  }
+  .nav-item.active { padding: 8px 16px; }
+  .nav-item span { display: none; }
+  .nav-item.active span { display: inline; }
+
+  .spacer { height: 100px; }
+</style>
+</head>
+<body>
+  <div class="container">
+    <div class="app-bar">
+      <div class="logo">
+        <span class="logo-badge">TLDR</span>
+        <span class="logo-text">News</span>
+      </div>
+      <div class="bar-actions">
+        <button class="bar-btn">🔍</button>
+        <button class="bar-btn">🔖</button>
+      </div>
+    </div>
+
+    <div class="chips">
+      <div class="chip active">⚡ All</div>
+      <div class="chip">💻 Tech</div>
+      <div class="chip">🧠 AI</div>
+      <div class="chip">🌐 Web Dev</div>
+      <div class="chip">🔒 InfoSec</div>
+      <div class="chip">☁️ DevOps</div>
+      <div class="chip">🎨 Design</div>
+    </div>
+
+    <div class="hero">
+      <div class="hero-meta">
+        <span class="hero-badge">🧠 AI</span>
+        <span class="hero-time">2h ago</span>
+      </div>
+      <h2>OpenAI Just Changed Everything With GPT-5</h2>
+      <p>GPT-5 features real-time video understanding, improved reasoning, and what it means for developers. API pricing remains competitive with a new efficient tier.</p>
+      <div class="hero-footer">
+        <span class="glass-pill">TechCrunch</span>
+        <span class="glass-pill">4 min</span>
+        <div class="glass-icon">🔖</div>
+        <div class="glass-icon">↗</div>
+      </div>
+    </div>
+
+    <div class="section-hdr">
+      <div class="section-emoji">🏢</div>
+      <div class="section-title">Big Tech & Startups</div>
+      <div class="section-count">3</div>
+    </div>
+
+    <div class="compact">
+      <div class="accent-bar" style="background:#2196F3"></div>
+      <div class="compact-body">
+        <div class="compact-meta">
+          <span style="color:#2196F3">TECH</span>
+          <span class="dot"></span>
+          <span class="muted">3 min</span>
+          <span style="flex:1"></span>
+          <span class="muted">3h ago</span>
+        </div>
+        <h3>Apple Announces M4 Ultra Chip With 80-Core GPU</h3>
+        <div class="compact-source">The Verge</div>
+      </div>
+    </div>
+
+    <div class="compact">
+      <div class="accent-bar" style="background:#2196F3"></div>
+      <div class="compact-body">
+        <div class="compact-meta">
+          <span style="color:#2196F3">TECH</span>
+          <span class="dot"></span>
+          <span class="muted">3 min</span>
+          <span style="flex:1"></span>
+          <span class="muted">5h ago</span>
+        </div>
+        <h3>GitHub Copilot Now Writes Entire Pull Requests</h3>
+        <div class="compact-source">GitHub Blog</div>
+      </div>
+    </div>
+
+    <div class="section-hdr">
+      <div class="section-emoji">🔬</div>
+      <div class="section-title">Science & Futuristic Tech</div>
+      <div class="section-count">2</div>
+    </div>
+
+    <div class="compact">
+      <div class="accent-bar" style="background:#9C27B0"></div>
+      <div class="compact-body">
+        <div class="compact-meta">
+          <span style="color:#9C27B0">SCIENCE</span>
+          <span class="dot"></span>
+          <span class="muted">4 min</span>
+          <span style="flex:1"></span>
+          <span class="muted">6h ago</span>
+        </div>
+        <h3>Breakthrough: Quantum Computer Solves Real-World Problem</h3>
+        <div class="compact-source">MIT Technology Review</div>
+      </div>
+    </div>
+
+    <div class="spacer"></div>
+  </div>
+
+  <div class="nav">
+    <div class="nav-item active" style="background:rgba(108,92,231,0.12);color:#6C5CE7">⚡ <span>Feed</span></div>
+    <div class="nav-item" style="color:#D1D5DB">▶️</div>
+    <div class="nav-item" style="color:#D1D5DB">✨</div>
+    <div class="nav-item" style="color:#D1D5DB">⚙️</div>
+  </div>
+</body>
+</html>

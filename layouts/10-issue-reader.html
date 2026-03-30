@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TLDR — Issue Reader</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Inter', sans-serif; background: #F7F7FB; color: #0A0E27; }
+  .container { max-width: 480px; margin: 0 auto; }
+
+  .issue-header {
+    height: 220px; position: relative; overflow: hidden;
+    background: linear-gradient(135deg, #0F3460, #5B8DEF);
+  }
+  .issue-header::before {
+    content: ''; position: absolute; top: -30px; right: -30px;
+    width: 160px; height: 160px; border-radius: 50%;
+    background: rgba(255,255,255,0.08);
+  }
+  .header-top {
+    display: flex; align-items: center; padding: 16px 20px;
+    position: relative; z-index: 1;
+  }
+  .back-btn {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: rgba(255,255,255,0.15); border: none;
+    color: white; font-size: 16px; cursor: pointer;
+    display: grid; place-items: center;
+  }
+  .header-content {
+    position: absolute; left: 20px; bottom: 20px; right: 20px; z-index: 1;
+  }
+  .issue-label {
+    font-family: 'Space Grotesk'; font-size: 24px; font-weight: 900;
+    color: white; letter-spacing: -0.5px;
+  }
+  .issue-sub { font-size: 14px; color: rgba(255,255,255,0.8); margin-top: 4px; }
+
+  .content { padding: 28px 20px; }
+
+  .article-category {
+    display: inline-flex; align-items: center; gap: 8px; margin-bottom: 12px;
+  }
+  .cat-pill {
+    padding: 4px 10px; border-radius: 6px;
+    background: rgba(15,52,96,0.1);
+    font-size: 12px; font-weight: 600; color: #0F3460;
+  }
+  .read-time { font-size: 11px; color: #6B7280; }
+
+  .article-title {
+    font-family: 'Space Grotesk'; font-size: 24px; font-weight: 800;
+    line-height: 1.2; letter-spacing: -0.5px; margin-bottom: 12px;
+  }
+
+  .author-row {
+    display: flex; align-items: center; gap: 8px; margin-bottom: 24px;
+  }
+  .author-avatar {
+    width: 28px; height: 28px; border-radius: 50%;
+    background: rgba(15,52,96,0.2); display: grid;
+    place-items: center; font-size: 13px; font-weight: 700; color: #0F3460;
+  }
+  .author-name { font-size: 13px; font-weight: 600; }
+
+  .article-body {
+    font-size: 16px; line-height: 1.8; color: #0A0E27;
+  }
+  .article-body p { margin-bottom: 16px; }
+
+  .article-divider {
+    display: flex; align-items: center; gap: 12px;
+    margin: 32px 0;
+  }
+  .div-line {
+    flex: 1; height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(15,52,96,0.15), transparent);
+  }
+  .div-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: rgba(15,52,96,0.2);
+  }
+
+  .next-article { color: #6B7280; font-size: 12px; font-weight: 600; text-align: center; letter-spacing: 1px; }
+</style>
+</head>
+<body>
+  <div class="container">
+    <div class="issue-header">
+      <div class="header-top"><button class="back-btn">←</button></div>
+      <div class="header-content">
+        <div class="issue-label">Too Long; Did Read</div>
+        <div class="issue-sub">Issue #30 — The AI Infrastructure Edition</div>
+      </div>
+    </div>
+
+    <div class="content">
+      <div class="article-category">
+        <span class="cat-pill">Deep Dive</span>
+        <span class="read-time">12 min read</span>
+      </div>
+
+      <h1 class="article-title">The Hidden Cost of AI Infrastructure</h1>
+
+      <div class="author-row">
+        <div class="author-avatar">S</div>
+        <div class="author-name">Sarah Chen</div>
+      </div>
+
+      <div class="article-body">
+        <p>As companies race to deploy AI at scale, the true cost of the underlying infrastructure is becoming clear. Data centers are consuming unprecedented amounts of energy, water usage for cooling is straining local resources, and the demand for specialized GPUs has created a global supply chain bottleneck.</p>
+
+        <p>In this deep dive, we examine the environmental, economic, and geopolitical implications of building the AI future. From the power plants being reactivated to feed data center demand, to the new chip fabs being constructed across three continents, the story of AI infrastructure is really a story about how we allocate our most precious resources.</p>
+
+        <p>Industry experts estimate that AI-related energy consumption will triple by 2028, raising questions about sustainability commitments made by major tech companies. Microsoft, Google, and Amazon have all seen their carbon emissions rise despite aggressive renewable energy investments.</p>
+      </div>
+
+      <div class="article-divider">
+        <div class="div-line"></div>
+        <div class="div-dot"></div>
+        <div class="div-line"></div>
+      </div>
+
+      <div class="article-category">
+        <span class="cat-pill">Security</span>
+        <span class="read-time">10 min read</span>
+      </div>
+
+      <h1 class="article-title">Inside the Race to Build Quantum-Resistant Encryption</h1>
+
+      <div class="author-row">
+        <div class="author-avatar">M</div>
+        <div class="author-name">Marcus Webb</div>
+      </div>
+
+      <div class="article-body">
+        <p>With quantum computers advancing rapidly, cryptographers are in a sprint to deploy quantum-resistant algorithms before existing encryption becomes vulnerable. NIST has finalized its first post-quantum standards, but the real challenge is migration.</p>
+
+        <p>Banks, governments, and tech companies face the massive task of updating billions of devices and systems. Some organizations have adopted a "harvest now, decrypt later" defense posture, assuming adversaries are already collecting encrypted data for future decryption.</p>
+
+        <p>We speak with leading cryptographers about the timeline, the risks of moving too slowly, and why this might be the largest coordinated technology migration in history.</p>
+      </div>
+
+      <div class="article-divider">
+        <div class="div-line"></div>
+        <div class="div-dot"></div>
+        <div class="div-line"></div>
+      </div>
+
+      <div class="next-article">— END OF ISSUE —</div>
+      <br><br><br>
+    </div>
+  </div>
+</body>
+</html>

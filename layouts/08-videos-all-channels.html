@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TLDR News — All Videos</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Inter', sans-serif; background: #F7F7FB; color: #0A0E27; }
+  .container { max-width: 480px; margin: 0 auto; }
+
+  .app-bar {
+    position: sticky; top: 0; z-index: 100;
+    backdrop-filter: blur(24px); background: rgba(247,247,251,0.85);
+    padding: 16px; display: flex; align-items: center; gap: 10px;
+  }
+  .play-badge { padding: 6px; border-radius: 10px; background: linear-gradient(135deg,#FF6B6B,#EE5A24); color: white; font-size: 14px; }
+  .bar-title { font-family: 'Space Grotesk'; font-size: 22px; font-weight: 700; }
+
+  .chips { display: flex; gap: 6px; padding: 0 16px 16px; overflow-x: auto; scrollbar-width: none; }
+  .chips::-webkit-scrollbar { display: none; }
+  .chip {
+    padding: 8px 14px; border-radius: 16px; white-space: nowrap;
+    font-size: 12px; font-weight: 700; cursor: pointer;
+    background: rgba(0,0,0,0.04); color: #6B7280;
+  }
+  .chip.active { background: #6C5CE7; color: white; }
+
+  .video-card { padding: 6px 16px; cursor: pointer; }
+  .thumbnail {
+    aspect-ratio: 16/9; border-radius: 24px; position: relative;
+    overflow: hidden; margin-bottom: 14px;
+  }
+  .thumbnail::before {
+    content: ''; position: absolute; top: -20px; right: -20px;
+    width: 100px; height: 100px; border-radius: 50%; background: rgba(255,255,255,0.05);
+  }
+  .play-overlay {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+    width: 56px; height: 56px; border-radius: 50%;
+    background: rgba(255,255,255,0.15); border: 2px solid rgba(255,255,255,0.3);
+    display: grid; place-items: center; font-size: 24px;
+  }
+  .duration {
+    position: absolute; bottom: 12px; right: 12px;
+    padding: 5px 10px; border-radius: 10px; background: rgba(0,0,0,0.6);
+    color: white; font-size: 12px; font-weight: 700;
+  }
+  .ch-badge {
+    position: absolute; top: 12px; left: 12px;
+    padding: 5px 10px; border-radius: 20px;
+    background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2);
+    color: white; font-size: 10px; font-weight: 700; letter-spacing: 0.5px;
+  }
+  .video-title { font-family: 'Space Grotesk'; font-size: 18px; font-weight: 700; line-height: 1.25; padding: 0 4px; margin-bottom: 8px; }
+  .video-meta { display: flex; align-items: center; gap: 6px; padding: 0 4px 6px; font-size: 11px; color: #6B7280; }
+  .avatar { width: 24px; height: 24px; border-radius: 50%; display: grid; place-items: center; color: white; font-size: 10px; }
+  .dot { width: 3px; height: 3px; border-radius: 50%; background: #D1D5DB; }
+
+  .spacer { height: 100px; }
+  .nav {
+    position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%);
+    width: calc(100% - 40px); max-width: 440px;
+    backdrop-filter: blur(24px); background: rgba(255,255,255,0.85);
+    border-radius: 28px; padding: 10px 8px;
+    display: flex; justify-content: space-evenly;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.08); border: 1px solid rgba(0,0,0,0.04);
+  }
+  .nav-item { padding: 8px 12px; border-radius: 20px; font-size: 18px; cursor: pointer; display: flex; align-items: center; gap: 6px; color: #D1D5DB; }
+  .nav-item.active { padding: 8px 16px; }
+  .nav-item span { font-size: 12px; font-weight: 700; display: none; }
+  .nav-item.active span { display: inline; }
+</style>
+</head>
+<body>
+  <div class="container">
+    <div class="app-bar">
+      <div class="play-badge">▶</div>
+      <div class="bar-title">Watch</div>
+    </div>
+    <div class="chips">
+      <div class="chip active">📺 All</div>
+      <div class="chip">🌐 Global</div>
+      <div class="chip">🇬🇧 UK</div>
+      <div class="chip">🇪🇺 EU</div>
+      <div class="chip">🇺🇸 US</div>
+      <div class="chip">🌍 Africa</div>
+      <div class="chip">📰 Daily</div>
+    </div>
+
+    <div class="video-card">
+      <div class="thumbnail" style="background:linear-gradient(135deg,#0F3460,#5B8DEF);box-shadow:0 10px 28px rgba(15,52,96,0.25)">
+        <div class="ch-badge">🌐 TLDR</div>
+        <div class="play-overlay">▶</div>
+        <div class="duration">12:34</div>
+      </div>
+      <div class="video-title">OpenAI Just Changed Everything With GPT-5</div>
+      <div class="video-meta">
+        <div class="avatar" style="background:linear-gradient(135deg,#0F3460,#5B8DEF)">T</div>
+        <strong>@TLDRGlobal</strong> <span class="dot"></span> 284K views <span class="dot"></span> 2h ago
+      </div>
+    </div>
+
+    <div class="video-card">
+      <div class="thumbnail" style="background:linear-gradient(135deg,#8B0000,#CD5C5C);box-shadow:0 10px 28px rgba(139,0,0,0.25)">
+        <div class="ch-badge">🇺🇸 TLDR US</div>
+        <div class="play-overlay">▶</div>
+        <div class="duration">13:17</div>
+      </div>
+      <div class="video-title">Congress Just Passed a Major Tech Bill</div>
+      <div class="video-meta">
+        <div class="avatar" style="background:linear-gradient(135deg,#8B0000,#CD5C5C)">U</div>
+        <strong>@TLDRUS</strong> <span class="dot"></span> 215K views <span class="dot"></span> 3h ago
+      </div>
+    </div>
+
+    <div class="video-card">
+      <div class="thumbnail" style="background:linear-gradient(135deg,#2E7D32,#66BB6A);box-shadow:0 10px 28px rgba(46,125,50,0.25)">
+        <div class="ch-badge">🌍 TLDR Africa</div>
+        <div class="play-overlay">▶</div>
+        <div class="duration">12:56</div>
+      </div>
+      <div class="video-title">Africa's Fintech Boom Is Just Getting Started</div>
+      <div class="video-meta">
+        <div class="avatar" style="background:linear-gradient(135deg,#2E7D32,#66BB6A)">A</div>
+        <strong>@TLDRAfrica</strong> <span class="dot"></span> 45K views <span class="dot"></span> 5h ago
+      </div>
+    </div>
+
+    <div class="spacer"></div>
+  </div>
+
+  <div class="nav">
+    <div class="nav-item" style="color:#D1D5DB">⚡</div>
+    <div class="nav-item active" style="background:rgba(255,107,107,0.12);color:#FF6B6B">▶️ <span>Watch</span></div>
+    <div class="nav-item" style="color:#D1D5DB">✨</div>
+    <div class="nav-item" style="color:#D1D5DB">⚙️</div>
+  </div>
+</body>
+</html>

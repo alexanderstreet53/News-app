@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TLDR News — Videos</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Inter', sans-serif; background: #F7F7FB; color: #0A0E27; }
+  .container { max-width: 480px; margin: 0 auto; }
+
+  .app-bar {
+    position: sticky; top: 0; z-index: 100;
+    backdrop-filter: blur(24px); background: rgba(247,247,251,0.85);
+    padding: 16px; display: flex; align-items: center; gap: 10px;
+  }
+  .play-badge {
+    padding: 6px; border-radius: 10px;
+    background: linear-gradient(135deg, #FF6B6B, #EE5A24);
+    color: white; font-size: 14px; line-height: 1;
+  }
+  .bar-title { font-family: 'Space Grotesk', sans-serif; font-size: 22px; font-weight: 700; }
+
+  .chips { display: flex; gap: 6px; padding: 0 16px 16px; overflow-x: auto; scrollbar-width: none; }
+  .chips::-webkit-scrollbar { display: none; }
+  .chip {
+    padding: 8px 14px; border-radius: 16px; white-space: nowrap;
+    font-size: 12px; font-weight: 500; cursor: pointer;
+    background: rgba(0,0,0,0.04); color: #6B7280;
+    transition: all 0.2s;
+  }
+  .chip.active { color: white; font-weight: 700; }
+
+  /* Channel header */
+  .channel-header {
+    margin: 4px 16px 16px; padding: 20px; border-radius: 24px;
+    display: flex; align-items: center; gap: 14px;
+    color: white; position: relative; overflow: hidden;
+  }
+  .channel-header::before {
+    content: ''; position: absolute; top: -20px; right: -20px;
+    width: 100px; height: 100px; border-radius: 50%;
+    background: rgba(255,255,255,0.05);
+  }
+  .ch-icon {
+    width: 44px; height: 44px; border-radius: 16px;
+    background: rgba(255,255,255,0.15); display: grid; place-items: center;
+    font-size: 20px; flex-shrink: 0;
+  }
+  .ch-info { flex: 1; }
+  .ch-name { font-family: 'Space Grotesk'; font-size: 17px; font-weight: 800; letter-spacing: -0.3px; }
+  .ch-desc { font-size: 12px; opacity: 0.75; margin-top: 2px; }
+  .ch-handle {
+    padding: 5px 10px; border-radius: 20px;
+    background: rgba(255,255,255,0.15);
+    font-size: 10px; font-weight: 700; letter-spacing: 0.5px;
+  }
+
+  /* Video card */
+  .video-card { padding: 6px 16px; cursor: pointer; }
+  .thumbnail {
+    aspect-ratio: 16/9; border-radius: 24px; position: relative;
+    overflow: hidden; margin-bottom: 14px;
+  }
+  .thumbnail::before {
+    content: ''; position: absolute; top: -20px; right: -20px;
+    width: 100px; height: 100px; border-radius: 50%;
+    background: rgba(255,255,255,0.05);
+  }
+  .play-overlay {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+    width: 56px; height: 56px; border-radius: 50%;
+    background: rgba(255,255,255,0.15); border: 2px solid rgba(255,255,255,0.3);
+    display: grid; place-items: center; font-size: 24px;
+  }
+  .duration {
+    position: absolute; bottom: 12px; right: 12px;
+    padding: 5px 10px; border-radius: 10px;
+    background: rgba(0,0,0,0.6); color: white;
+    font-size: 12px; font-weight: 700; letter-spacing: 0.5px;
+  }
+  .channel-badge {
+    position: absolute; top: 12px; left: 12px;
+    padding: 5px 10px; border-radius: 20px;
+    background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2);
+    color: white; font-size: 10px; font-weight: 700; letter-spacing: 0.5px;
+    display: flex; align-items: center; gap: 4px;
+  }
+  .video-title {
+    font-family: 'Space Grotesk'; font-size: 18px; font-weight: 700;
+    line-height: 1.25; letter-spacing: -0.3px;
+    padding: 0 4px; margin-bottom: 8px;
+  }
+  .video-meta {
+    display: flex; align-items: center; gap: 6px;
+    padding: 0 4px 6px; font-size: 11px; color: #6B7280;
+  }
+  .video-meta .avatar {
+    width: 24px; height: 24px; border-radius: 50%;
+    display: grid; place-items: center; color: white; font-size: 11px;
+  }
+  .dot { width: 3px; height: 3px; border-radius: 50%; background: #D1D5DB; }
+
+  .spacer { height: 100px; }
+
+  .nav {
+    position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%);
+    width: calc(100% - 40px); max-width: 440px;
+    backdrop-filter: blur(24px); background: rgba(255,255,255,0.85);
+    border-radius: 28px; padding: 10px 8px;
+    display: flex; justify-content: space-evenly; align-items: center;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.08); border: 1px solid rgba(0,0,0,0.04);
+  }
+  .nav-item { padding: 8px 12px; border-radius: 20px; font-size: 18px; cursor: pointer; display: flex; align-items: center; gap: 6px; }
+  .nav-item span { font-size: 12px; font-weight: 700; display: none; }
+  .nav-item.active span { display: inline; }
+  .nav-item.active { padding: 8px 16px; }
+</style>
+</head>
+<body>
+  <div class="container">
+    <div class="app-bar">
+      <div class="play-badge">▶</div>
+      <div class="bar-title">Watch</div>
+    </div>
+
+    <div class="chips">
+      <div class="chip" style="background:rgba(0,0,0,0.04)">📺 All</div>
+      <div class="chip" style="background:rgba(0,0,0,0.04)">🌐 Global</div>
+      <div class="chip active" style="background:#003399">🇪🇺 EU</div>
+      <div class="chip" style="background:rgba(0,0,0,0.04)">🇬🇧 UK</div>
+      <div class="chip" style="background:rgba(0,0,0,0.04)">🇺🇸 US</div>
+      <div class="chip" style="background:rgba(0,0,0,0.04)">🌍 Africa</div>
+      <div class="chip" style="background:rgba(0,0,0,0.04)">📰 Daily</div>
+    </div>
+
+    <div class="channel-header" style="background:linear-gradient(135deg,#003399,#0044CC,rgba(255,204,0,0.5));box-shadow:0 8px 24px rgba(0,51,153,0.3)">
+      <div class="ch-icon">🇪🇺</div>
+      <div class="ch-info">
+        <div class="ch-name">TLDR EU</div>
+        <div class="ch-desc">EU news & policy, simplified</div>
+      </div>
+      <div class="ch-handle">@TLDREU</div>
+    </div>
+
+    <div class="video-card">
+      <div class="thumbnail" style="background:linear-gradient(135deg,#003399,#0044CC,rgba(255,204,0,0.4));box-shadow:0 10px 28px rgba(0,51,153,0.25)">
+        <div class="channel-badge">🇪🇺 TLDR EU</div>
+        <div class="play-overlay">▶</div>
+        <div class="duration">16:08</div>
+      </div>
+      <div class="video-title">EU AI Act Is Now In Effect — What Changes</div>
+      <div class="video-meta">
+        <div class="avatar" style="background:linear-gradient(135deg,#003399,#FFCC00)">🇪🇺</div>
+        <strong>@TLDREU</strong> <span class="dot"></span> 132K views <span class="dot"></span> 2h ago
+      </div>
+    </div>
+
+    <div class="video-card">
+      <div class="thumbnail" style="background:linear-gradient(135deg,#003399,#0055DD,rgba(255,204,0,0.3));box-shadow:0 10px 28px rgba(0,51,153,0.25)">
+        <div class="channel-badge">🇪🇺 TLDR EU</div>
+        <div class="play-overlay">▶</div>
+        <div class="duration">11:33</div>
+      </div>
+      <div class="video-title">Europe's $10B Semiconductor Push Explained</div>
+      <div class="video-meta">
+        <div class="avatar" style="background:linear-gradient(135deg,#003399,#FFCC00)">🇪🇺</div>
+        <strong>@TLDREU</strong> <span class="dot"></span> 95K views <span class="dot"></span> 1d ago
+      </div>
+    </div>
+
+    <div class="spacer"></div>
+  </div>
+
+  <div class="nav">
+    <div class="nav-item" style="color:#D1D5DB">⚡</div>
+    <div class="nav-item active" style="background:rgba(255,107,107,0.12);color:#FF6B6B">▶️ <span>Watch</span></div>
+    <div class="nav-item" style="color:#D1D5DB">✨</div>
+    <div class="nav-item" style="color:#D1D5DB">⚙️</div>
+  </div>
+</body>
+</html>
