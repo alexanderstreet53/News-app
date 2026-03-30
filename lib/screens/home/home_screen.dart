@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tldr_news/models/article.dart';
 import 'package:tldr_news/providers/articles_provider.dart';
 import 'package:tldr_news/screens/article_detail/article_detail_screen.dart';
+import 'package:tldr_news/screens/bookmarks/bookmarks_screen.dart';
 import 'package:tldr_news/screens/home/widgets/article_card.dart';
 import 'package:tldr_news/screens/home/widgets/category_chips.dart';
 import 'package:tldr_news/screens/home/widgets/newsletter_header.dart';
@@ -49,11 +50,22 @@ class HomeScreen extends ConsumerWidget {
               ),
               actions: [
                 IconButton(
-                  icon: const Icon(Icons.search),
+                  icon: const Icon(Icons.search_rounded),
                   onPressed: () {
                     showSearch(
                       context: context,
                       delegate: _ArticleSearchDelegate(ref),
+                    );
+                  },
+                ),
+                IconButton(
+                  icon: const Icon(Icons.bookmark_border_rounded),
+                  tooltip: 'Bookmarks',
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (_) => const BookmarksScreen(),
+                      ),
                     );
                   },
                 ),
