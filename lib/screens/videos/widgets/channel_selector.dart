@@ -9,77 +9,77 @@ class ChannelSelector extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final selected = ref.watch(selectedChannelProvider);
-    final theme = Theme.of(context);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return SizedBox(
-      height: 48,
+      height: 44,
       child: ListView.separated(
         scrollDirection: Axis.horizontal,
         padding: const EdgeInsets.symmetric(horizontal: 16),
-        itemCount: TldrChannel.values.length + 1, // +1 for "All"
-        separatorBuilder: (_, __) => const SizedBox(width: 8),
+        itemCount: TldrChannel.values.length + 1,
+        separatorBuilder: (_, __) => const SizedBox(width: 6),
         itemBuilder: (context, index) {
-          if (index == 0) {
-            final isSelected = selected == null;
-            return FilterChip(
-              selected: isSelected,
-              showCheckmark: false,
-              avatar: Icon(
-                Icons.play_circle_outline,
-                size: 16,
-                color: isSelected ? Colors.white : theme.colorScheme.primary,
-              ),
-              label: Text(
-                'All',
-                style: TextStyle(
-                  color: isSelected
-                      ? Colors.white
-                      : theme.colorScheme.onSurface,
-                  fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
-                  fontSize: 13,
-                ),
-              ),
-              backgroundColor: theme.colorScheme.surface,
-              selectedColor: theme.colorScheme.primary,
-              side: BorderSide(
-                color:
-                    isSelected ? Colors.transparent : Colors.grey.shade300,
-              ),
-              onSelected: (_) {
-                ref.read(selectedChannelProvider.notifier).state = null;
-              },
-            );
-          }
+          final isAll = index == 0;
+          final channel = isAll ? null : TldrChannel.values[index - 1];
+          final isSelected = isAll
+              ? selected == null
+              : channel == selected;
+          final color = isAll ? const Color(0xFF6C5CE7) : channel!.color;
+          final label = isAll ? 'All' : channel!.label;
+          final icon = isAll ? Icons.play_circle_outline : channel!.icon;
 
-          final channel = TldrChannel.values[index - 1];
-          final isSelected = channel == selected;
-
-          return FilterChip(
-            selected: isSelected,
-            showCheckmark: false,
-            avatar: Icon(
-              channel.icon,
-              size: 16,
-              color: isSelected ? Colors.white : channel.color,
-            ),
-            label: Text(
-              channel.label,
-              style: TextStyle(
-                color: isSelected
-                    ? Colors.white
-                    : theme.colorScheme.onSurface,
-                fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
-                fontSize: 13,
-              ),
-            ),
-            backgroundColor: theme.colorScheme.surface,
-            selectedColor: channel.color,
-            side: BorderSide(
-              color: isSelected ? Colors.transparent : Colors.grey.shade300,
-            ),
-            onSelected: (_) {
+          return GestureDetector(
+            onTap: () {
               ref.read(selectedChannelProvider.notifier).state = channel;
             },
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 200),
+              curve: Curves.easeOutCubic,
+              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+              decoration: BoxDecoration(
+                color: isSelected
+                    ? color
+                    : (isDark
+                        ? Colors.white.withOpacity(0.06)
+                        : Colors.black.withOpacity(0.04)),
+                borderRadius: BorderRadius.circular(16),
+                border: isSelected
+                    ? null
+                    : Border.all(
+                        color: isDark
+                            ? Colors.white.withOpacity(0.06)
+                            : Colors.black.withOpacity(0.04),
+                      ),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(
+                    icon,
+                    size: 14,
+                    color: isSelected
+                        ? Colors.white
+                        : (isDark
+                            ? Colors.grey.shade400
+                            : Colors.grey.shade600),
+                  ),
+                  const SizedBox(width: 6),
+                  Text(
+                    label,
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight:
+                          isSelected ? FontWeight.w700 : FontWeight.w500,
+                      color: isSelected
+                          ? Colors.white
+                          : (isDark
+                              ? Colors.grey.shade400
+                              : Colors.grey.shade600),
+                    ),
+                  ),
+                ],
+              ),
+            ),
           );
         },
       ),

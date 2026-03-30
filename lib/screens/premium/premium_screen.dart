@@ -26,11 +26,11 @@ class PremiumScreen extends StatelessWidget {
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                     colors: [
-                      Color(0xFF0F3460),
-                      Color(0xFF1A1A2E),
-                      Color(0xFFE94560),
+                      Color(0xFF6C5CE7),
+                      Color(0xFF0A0E27),
+                      Color(0xFFFF6B6B),
                     ],
-                    stops: [0.0, 0.6, 1.0],
+                    stops: [0.0, 0.5, 1.0],
                   ),
                 ),
                 child: Stack(

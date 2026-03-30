@@ -13,6 +13,8 @@ class VideosScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final videosAsync = ref.watch(videosProvider);
     final selectedChannel = ref.watch(selectedChannelProvider);
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
 
     return Scaffold(
       body: NestedScrollView(
@@ -24,40 +26,32 @@ class VideosScreen extends ConsumerWidget {
               title: Row(
                 children: [
                   Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 8,
-                      vertical: 4,
-                    ),
+                    padding: const EdgeInsets.all(6),
                     decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [
-                          const Color(0xFFFF0000),
-                          const Color(0xFFCC0000),
-                        ],
+                      gradient: const LinearGradient(
+                        colors: [Color(0xFFFF6B6B), Color(0xFFEE5A24)],
                       ),
-                      borderRadius: BorderRadius.circular(6),
+                      borderRadius: BorderRadius.circular(10),
                     ),
                     child: const Icon(
                       Icons.play_arrow_rounded,
                       color: Colors.white,
-                      size: 18,
+                      size: 16,
                     ),
                   ),
-                  const SizedBox(width: 8),
-                  const Text('Videos'),
+                  const SizedBox(width: 10),
+                  Text('Watch', style: theme.appBarTheme.titleTextStyle),
                 ],
               ),
               bottom: const PreferredSize(
-                preferredSize: Size.fromHeight(56),
+                preferredSize: Size.fromHeight(52),
                 child: ChannelSelector(),
               ),
             ),
           ];
         },
         body: RefreshIndicator(
-          onRefresh: () async {
-            ref.invalidate(videosProvider);
-          },
+          onRefresh: () async => ref.invalidate(videosProvider),
           child: videosAsync.when(
             data: (videos) {
               if (videos.isEmpty) {
@@ -65,22 +59,26 @@ class VideosScreen extends ConsumerWidget {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Icon(
-                        Icons.videocam_off_outlined,
-                        size: 64,
-                        color: Colors.grey.shade400,
+                      Container(
+                        width: 72,
+                        height: 72,
+                        decoration: BoxDecoration(
+                          color: isDark
+                              ? Colors.white.withOpacity(0.06)
+                              : Colors.black.withOpacity(0.04),
+                          shape: BoxShape.circle,
+                        ),
+                        child: Icon(Icons.videocam_off_outlined,
+                            size: 32, color: Colors.grey.shade400),
                       ),
-                      const SizedBox(height: 16),
-                      Text(
-                        'No videos found',
-                        style: Theme.of(context).textTheme.titleMedium,
-                      ),
+                      const SizedBox(height: 14),
+                      Text('No videos found',
+                          style: theme.textTheme.titleMedium),
                     ],
                   ),
                 );
               }
 
-              // If a channel is selected, show channel header
               return CustomScrollView(
                 slivers: [
                   if (selectedChannel != null)
@@ -93,7 +91,7 @@ class VideosScreen extends ConsumerWidget {
                       childCount: videos.length,
                     ),
                   ),
-                  const SliverPadding(padding: EdgeInsets.only(bottom: 100)),
+                  const SliverPadding(padding: EdgeInsets.only(bottom: 120)),
                 ],
               );
             },
@@ -103,13 +101,10 @@ class VideosScreen extends ConsumerWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Icon(Icons.wifi_off_rounded,
-                      size: 64, color: Colors.grey.shade400),
-                  const SizedBox(height: 16),
-                  Text('Failed to load videos',
-                      style: Theme.of(context).textTheme.titleMedium),
-                  const SizedBox(height: 8),
-                  Text('Pull down to retry',
-                      style: Theme.of(context).textTheme.bodyMedium),
+                      size: 56, color: Colors.grey.shade400),
+                  const SizedBox(height: 14),
+                  Text('Couldn\'t load videos',
+                      style: theme.textTheme.titleMedium),
                 ],
               ),
             ),
@@ -127,44 +122,38 @@ class _ChannelHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
     return Container(
       margin: const EdgeInsets.fromLTRB(16, 12, 16, 4),
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
             channel.color,
-            channel.color.withOpacity(0.8),
-            channel.accentColor.withOpacity(0.6),
+            channel.color.withOpacity(0.7),
+            channel.accentColor.withOpacity(0.5),
           ],
         ),
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(24),
         boxShadow: [
           BoxShadow(
             color: channel.color.withOpacity(0.3),
-            blurRadius: 16,
-            offset: const Offset(0, 6),
+            blurRadius: 24,
+            offset: const Offset(0, 8),
           ),
         ],
       ),
       child: Row(
         children: [
           Container(
-            width: 48,
-            height: 48,
+            width: 44,
+            height: 44,
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.2),
-              shape: BoxShape.circle,
+              color: Colors.white.withOpacity(0.15),
+              borderRadius: BorderRadius.circular(16),
             ),
-            child: Icon(
-              channel.icon,
-              color: Colors.white,
-              size: 24,
-            ),
+            child: Icon(channel.icon, color: Colors.white, size: 22),
           ),
           const SizedBox(width: 14),
           Expanded(
@@ -175,16 +164,17 @@ class _ChannelHeader extends StatelessWidget {
                   channel.label,
                   style: const TextStyle(
                     color: Colors.white,
-                    fontSize: 18,
+                    fontSize: 17,
                     fontWeight: FontWeight.w800,
+                    letterSpacing: -0.3,
                   ),
                 ),
                 const SizedBox(height: 2),
                 Text(
                   channel.description,
                   style: TextStyle(
-                    color: Colors.white.withOpacity(0.8),
-                    fontSize: 13,
+                    color: Colors.white.withOpacity(0.75),
+                    fontSize: 12,
                   ),
                 ),
               ],
@@ -193,15 +183,16 @@ class _ChannelHeader extends StatelessWidget {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.2),
+              color: Colors.white.withOpacity(0.15),
               borderRadius: BorderRadius.circular(20),
             ),
             child: Text(
               channel.youtubeHandle,
               style: const TextStyle(
                 color: Colors.white,
-                fontSize: 11,
-                fontWeight: FontWeight.w600,
+                fontSize: 10,
+                fontWeight: FontWeight.w700,
+                letterSpacing: 0.5,
               ),
             ),
           ),

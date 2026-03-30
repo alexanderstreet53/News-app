@@ -16,6 +16,8 @@ class HomeScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final newsletterAsync = ref.watch(newsletterProvider);
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
 
     return Scaffold(
       body: NestedScrollView(
@@ -24,54 +26,91 @@ class HomeScreen extends ConsumerWidget {
             SliverAppBar(
               floating: true,
               snap: true,
+              toolbarHeight: 56,
               title: Row(
                 children: [
+                  // TLDR logo — custom, not generic
                   Container(
                     padding: const EdgeInsets.symmetric(
                       horizontal: 8,
                       vertical: 4,
                     ),
                     decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.primary,
-                      borderRadius: BorderRadius.circular(6),
+                      gradient: const LinearGradient(
+                        colors: [Color(0xFF6C5CE7), Color(0xFFA78BFA)],
+                      ),
+                      borderRadius: BorderRadius.circular(8),
                     ),
                     child: const Text(
                       'TLDR',
                       style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.w900,
-                        fontSize: 16,
+                        fontSize: 14,
+                        letterSpacing: 1,
                       ),
                     ),
                   ),
                   const SizedBox(width: 8),
-                  const Text('News'),
+                  Text(
+                    'News',
+                    style: theme.appBarTheme.titleTextStyle,
+                  ),
                 ],
               ),
               actions: [
-                IconButton(
-                  icon: const Icon(Icons.search_rounded),
-                  onPressed: () {
+                GestureDetector(
+                  onTap: () {
                     showSearch(
                       context: context,
                       delegate: _ArticleSearchDelegate(ref),
                     );
                   },
+                  child: Container(
+                    width: 38,
+                    height: 38,
+                    decoration: BoxDecoration(
+                      color: isDark
+                          ? Colors.white.withOpacity(0.06)
+                          : Colors.black.withOpacity(0.04),
+                      borderRadius: BorderRadius.circular(14),
+                    ),
+                    child: Icon(
+                      Icons.search_rounded,
+                      size: 20,
+                      color: isDark ? Colors.grey.shade400 : Colors.grey.shade600,
+                    ),
+                  ),
                 ),
-                IconButton(
-                  icon: const Icon(Icons.bookmark_border_rounded),
-                  tooltip: 'Bookmarks',
-                  onPressed: () {
+                const SizedBox(width: 8),
+                GestureDetector(
+                  onTap: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(
                         builder: (_) => const BookmarksScreen(),
                       ),
                     );
                   },
+                  child: Container(
+                    width: 38,
+                    height: 38,
+                    decoration: BoxDecoration(
+                      color: isDark
+                          ? Colors.white.withOpacity(0.06)
+                          : Colors.black.withOpacity(0.04),
+                      borderRadius: BorderRadius.circular(14),
+                    ),
+                    child: Icon(
+                      Icons.bookmark_border_rounded,
+                      size: 20,
+                      color: isDark ? Colors.grey.shade400 : Colors.grey.shade600,
+                    ),
+                  ),
                 ),
+                const SizedBox(width: 16),
               ],
               bottom: const PreferredSize(
-                preferredSize: Size.fromHeight(56),
+                preferredSize: Size.fromHeight(52),
                 child: CategoryChips(),
               ),
             ),
@@ -85,13 +124,24 @@ class HomeScreen extends ConsumerWidget {
             data: (newsletter) {
               final grouped = newsletter.groupedBySection;
               if (grouped.isEmpty) {
-                return const Center(
-                  child: Text('No articles found for this category.'),
+                return Center(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(Icons.inbox_rounded,
+                          size: 56, color: Colors.grey.shade400),
+                      const SizedBox(height: 12),
+                      Text(
+                        'Nothing here yet',
+                        style: theme.textTheme.titleMedium,
+                      ),
+                    ],
+                  ),
                 );
               }
 
               return ListView.builder(
-                padding: const EdgeInsets.only(bottom: 100),
+                padding: const EdgeInsets.only(bottom: 120),
                 itemCount: _countItems(grouped),
                 itemBuilder: (context, index) {
                   return _buildItem(context, index, newsletter, grouped);
@@ -105,21 +155,27 @@ class HomeScreen extends ConsumerWidget {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Icon(
-                      Icons.wifi_off_rounded,
-                      size: 64,
-                      color: Colors.grey.shade400,
+                    Container(
+                      width: 72,
+                      height: 72,
+                      decoration: BoxDecoration(
+                        color: isDark
+                            ? Colors.white.withOpacity(0.06)
+                            : Colors.black.withOpacity(0.04),
+                        shape: BoxShape.circle,
+                      ),
+                      child: Icon(
+                        Icons.wifi_off_rounded,
+                        size: 32,
+                        color: Colors.grey.shade400,
+                      ),
                     ),
                     const SizedBox(height: 16),
-                    Text(
-                      'Failed to load articles',
-                      style: Theme.of(context).textTheme.titleMedium,
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      'Pull down to retry',
-                      style: Theme.of(context).textTheme.bodyMedium,
-                    ),
+                    Text('Couldn\'t load articles',
+                        style: theme.textTheme.titleMedium),
+                    const SizedBox(height: 6),
+                    Text('Pull down to retry',
+                        style: theme.textTheme.bodyMedium),
                   ],
                 ),
               ),
@@ -133,8 +189,7 @@ class HomeScreen extends ConsumerWidget {
   int _countItems(Map<ArticleSection, List<Article>> grouped) {
     int count = 1; // newsletter header
     for (final entry in grouped.entries) {
-      count += 1; // section header
-      count += entry.value.length; // articles
+      count += 1 + entry.value.length; // section header + articles
     }
     return count;
   }
@@ -150,6 +205,8 @@ class HomeScreen extends ConsumerWidget {
     }
 
     int cursor = 1;
+    bool isFirstArticleGlobal = true; // first article overall → hero
+
     for (final entry in grouped.entries) {
       if (index == cursor) {
         return SectionHeader(
@@ -159,21 +216,29 @@ class HomeScreen extends ConsumerWidget {
       }
       cursor++;
 
-      for (final article in entry.value) {
+      for (int i = 0; i < entry.value.length; i++) {
         if (index == cursor) {
-          return ArticleCard(
-            article: article,
-            onTap: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (_) => ArticleDetailScreen(article: article),
-                ),
-              );
-            },
-          );
+          final article = entry.value[i];
+          final navigate = () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (_) => ArticleDetailScreen(article: article),
+              ),
+            );
+          };
+
+          // First article of the first section = hero card
+          if (isFirstArticleGlobal && i == 0) {
+            isFirstArticleGlobal = false;
+            return HeroArticleCard(article: article, onTap: navigate);
+          }
+          isFirstArticleGlobal = false;
+
+          return CompactArticleCard(article: article, onTap: navigate);
         }
         cursor++;
       }
+      isFirstArticleGlobal = false;
     }
 
     return const SizedBox.shrink();
@@ -182,18 +247,31 @@ class HomeScreen extends ConsumerWidget {
 
 class _ArticleSearchDelegate extends SearchDelegate<String> {
   final WidgetRef _ref;
-
   _ArticleSearchDelegate(this._ref);
 
   @override
   String get searchFieldLabel => 'Search TLDR articles...';
 
   @override
+  ThemeData appBarTheme(BuildContext context) {
+    final theme = Theme.of(context);
+    return theme.copyWith(
+      appBarTheme: theme.appBarTheme.copyWith(
+        backgroundColor: theme.scaffoldBackgroundColor,
+      ),
+      inputDecorationTheme: InputDecorationTheme(
+        hintStyle: theme.textTheme.bodyMedium,
+        border: InputBorder.none,
+      ),
+    );
+  }
+
+  @override
   List<Widget>? buildActions(BuildContext context) {
     return [
       if (query.isNotEmpty)
         IconButton(
-          icon: const Icon(Icons.clear),
+          icon: const Icon(Icons.clear_rounded),
           onPressed: () => query = '',
         ),
     ];
@@ -202,7 +280,7 @@ class _ArticleSearchDelegate extends SearchDelegate<String> {
   @override
   Widget? buildLeading(BuildContext context) {
     return IconButton(
-      icon: const Icon(Icons.arrow_back),
+      icon: const Icon(Icons.arrow_back_rounded),
       onPressed: () => close(context, ''),
     );
   }
@@ -216,21 +294,30 @@ class _ArticleSearchDelegate extends SearchDelegate<String> {
   @override
   Widget buildSuggestions(BuildContext context) {
     if (query.length < 2) {
+      final theme = Theme.of(context);
+      final isDark = theme.brightness == Brightness.dark;
       return Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(Icons.search, size: 64, color: Colors.grey.shade300),
-            const SizedBox(height: 16),
-            Text(
-              'Search articles by title, summary, or source',
-              style: Theme.of(context).textTheme.bodyMedium,
+            Container(
+              width: 72,
+              height: 72,
+              decoration: BoxDecoration(
+                color: isDark
+                    ? Colors.white.withOpacity(0.06)
+                    : Colors.black.withOpacity(0.04),
+                shape: BoxShape.circle,
+              ),
+              child: Icon(Icons.search_rounded,
+                  size: 32, color: Colors.grey.shade400),
             ),
+            const SizedBox(height: 14),
+            Text('Search articles', style: theme.textTheme.titleMedium),
           ],
         ),
       );
     }
-
     _ref.read(searchQueryProvider.notifier).state = query;
     return _buildSearchResults(context);
   }
@@ -250,9 +337,10 @@ class _ArticleSearchDelegate extends SearchDelegate<String> {
               );
             }
             return ListView.builder(
+              padding: const EdgeInsets.only(top: 8, bottom: 100),
               itemCount: articles.length,
               itemBuilder: (context, index) {
-                return ArticleCard(
+                return CompactArticleCard(
                   article: articles[index],
                   onTap: () {
                     Navigator.of(context).push(

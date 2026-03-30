@@ -11,42 +11,31 @@ class BookmarksScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final bookmarks = ref.watch(bookmarksProvider);
     final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Bookmarks'),
+        title: Text('Bookmarks', style: theme.appBarTheme.titleTextStyle),
         actions: [
           if (bookmarks.isNotEmpty)
-            IconButton(
-              icon: const Icon(Icons.delete_sweep_outlined),
-              tooltip: 'Clear all bookmarks',
-              onPressed: () {
-                showDialog(
-                  context: context,
-                  builder: (context) => AlertDialog(
-                    title: const Text('Clear All Bookmarks?'),
-                    content: const Text(
-                      'This will remove all saved articles. This action cannot be undone.',
-                    ),
-                    actions: [
-                      TextButton(
-                        onPressed: () => Navigator.pop(context),
-                        child: const Text('Cancel'),
-                      ),
-                      FilledButton(
-                        onPressed: () {
-                          ref.read(bookmarksProvider.notifier).clearAll();
-                          Navigator.pop(context);
-                        },
-                        style: FilledButton.styleFrom(
-                          backgroundColor: theme.colorScheme.error,
-                        ),
-                        child: const Text('Clear All'),
-                      ),
-                    ],
-                  ),
-                );
-              },
+            GestureDetector(
+              onTap: () => _confirmClear(context, ref),
+              child: Container(
+                width: 38,
+                height: 38,
+                margin: const EdgeInsets.only(right: 16),
+                decoration: BoxDecoration(
+                  color: isDark
+                      ? Colors.white.withOpacity(0.06)
+                      : Colors.black.withOpacity(0.04),
+                  borderRadius: BorderRadius.circular(14),
+                ),
+                child: Icon(
+                  Icons.delete_sweep_outlined,
+                  size: 20,
+                  color: isDark ? Colors.grey.shade400 : Colors.grey.shade600,
+                ),
+              ),
             ),
         ],
       ),
@@ -57,19 +46,31 @@ class BookmarksScreen extends ConsumerWidget {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Icon(
-                      Icons.bookmark_border,
-                      size: 80,
-                      color: Colors.grey.shade300,
+                    Container(
+                      width: 80,
+                      height: 80,
+                      decoration: BoxDecoration(
+                        color: isDark
+                            ? Colors.white.withOpacity(0.06)
+                            : Colors.black.withOpacity(0.04),
+                        shape: BoxShape.circle,
+                      ),
+                      child: Icon(
+                        Icons.bookmark_border_rounded,
+                        size: 36,
+                        color: Colors.grey.shade400,
+                      ),
                     ),
                     const SizedBox(height: 16),
                     Text(
                       'No bookmarks yet',
-                      style: theme.textTheme.titleMedium,
+                      style: theme.textTheme.titleLarge?.copyWith(
+                        fontWeight: FontWeight.w700,
+                      ),
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      'Tap the bookmark icon on any article to save it here for later.',
+                      'Tap the bookmark icon on any article\nto save it here for later.',
                       style: theme.textTheme.bodyMedium,
                       textAlign: TextAlign.center,
                     ),
@@ -86,19 +87,26 @@ class BookmarksScreen extends ConsumerWidget {
                   key: ValueKey(article.id),
                   direction: DismissDirection.endToStart,
                   background: Container(
+                    margin: const EdgeInsets.symmetric(
+                        horizontal: 16, vertical: 5),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFFF6B6B),
+                      borderRadius: BorderRadius.circular(22),
+                    ),
                     alignment: Alignment.centerRight,
                     padding: const EdgeInsets.only(right: 24),
-                    color: theme.colorScheme.error,
-                    child: const Icon(
-                      Icons.delete,
-                      color: Colors.white,
-                    ),
+                    child: const Icon(Icons.delete_rounded,
+                        color: Colors.white),
                   ),
                   onDismissed: (_) {
                     ref.read(bookmarksProvider.notifier).remove(article.id);
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         content: const Text('Bookmark removed'),
+                        behavior: SnackBarBehavior.floating,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(14),
+                        ),
                         action: SnackBarAction(
                           label: 'Undo',
                           onPressed: () {
@@ -110,7 +118,7 @@ class BookmarksScreen extends ConsumerWidget {
                       ),
                     );
                   },
-                  child: ArticleCard(
+                  child: CompactArticleCard(
                     article: article,
                     onTap: () {
                       Navigator.of(context).push(
@@ -124,6 +132,41 @@ class BookmarksScreen extends ConsumerWidget {
                 );
               },
             ),
+    );
+  }
+
+  void _confirmClear(BuildContext context, WidgetRef ref) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: isDark ? const Color(0xFF161933) : Colors.white,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(24),
+        ),
+        title: const Text('Clear All Bookmarks?'),
+        content: const Text('This can\'t be undone.'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Cancel'),
+          ),
+          FilledButton(
+            onPressed: () {
+              ref.read(bookmarksProvider.notifier).clearAll();
+              Navigator.pop(context);
+            },
+            style: FilledButton.styleFrom(
+              backgroundColor: const Color(0xFFFF6B6B),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(14),
+              ),
+            ),
+            child: const Text('Clear All'),
+          ),
+        ],
+      ),
     );
   }
 }

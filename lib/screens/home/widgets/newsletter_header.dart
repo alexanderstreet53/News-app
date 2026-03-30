@@ -9,39 +9,40 @@ class NewsletterHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
 
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 8, 16, 4),
+      child: Row(
         children: [
-          Row(
-            children: [
-              Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 10,
-                  vertical: 4,
-                ),
-                decoration: BoxDecoration(
-                  color: theme.colorScheme.primary.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Text(
-                  DateFormatter.newsletterDate(date),
-                  style: TextStyle(
-                    fontSize: 13,
-                    fontWeight: FontWeight.w600,
-                    color: theme.colorScheme.primary,
-                  ),
-                ),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  const Color(0xFF6C5CE7).withOpacity(isDark ? 0.2 : 0.1),
+                  const Color(0xFF6C5CE7).withOpacity(isDark ? 0.08 : 0.04),
+                ],
               ),
-              const SizedBox(width: 8),
-              Text(
-                DateFormatter.fullDate(date),
-                style: theme.textTheme.bodySmall,
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(
+                color: const Color(0xFF6C5CE7).withOpacity(isDark ? 0.15 : 0.1),
               ),
-            ],
+            ),
+            child: Text(
+              DateFormatter.newsletterDate(date),
+              style: const TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w700,
+                color: Color(0xFF6C5CE7),
+                letterSpacing: 0.3,
+              ),
+            ),
+          ),
+          const SizedBox(width: 10),
+          Text(
+            DateFormatter.fullDate(date),
+            style: theme.textTheme.bodySmall,
           ),
         ],
       ),

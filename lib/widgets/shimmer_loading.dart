@@ -7,102 +7,36 @@ class ShimmerArticleList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final baseColor = isDark ? const Color(0xFF1A1D35) : const Color(0xFFEEEEF2);
+    final highlightColor =
+        isDark ? const Color(0xFF222545) : const Color(0xFFF8F8FB);
 
     return Shimmer.fromColors(
-      baseColor: isDark ? Colors.grey.shade800 : Colors.grey.shade200,
-      highlightColor: isDark ? Colors.grey.shade700 : Colors.grey.shade100,
-      child: ListView.builder(
+      baseColor: baseColor,
+      highlightColor: highlightColor,
+      child: ListView(
         padding: const EdgeInsets.all(16),
-        itemCount: 6,
-        itemBuilder: (context, index) {
-          return const _ShimmerCard();
-        },
-      ),
-    );
-  }
-}
-
-class _ShimmerCard extends StatelessWidget {
-  const _ShimmerCard();
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 12),
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            children: [
-              Container(
-                width: 60,
-                height: 20,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(4),
-                ),
+          // Hero shimmer
+          Container(
+            height: 220,
+            margin: const EdgeInsets.only(bottom: 16),
+            decoration: BoxDecoration(
+              color: baseColor,
+              borderRadius: BorderRadius.circular(28),
+            ),
+          ),
+          // Compact cards
+          for (var i = 0; i < 5; i++) ...[
+            Container(
+              height: 100,
+              margin: const EdgeInsets.only(bottom: 10),
+              decoration: BoxDecoration(
+                color: baseColor,
+                borderRadius: BorderRadius.circular(22),
               ),
-              const SizedBox(width: 8),
-              Container(
-                width: 80,
-                height: 14,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(4),
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 12),
-          Container(
-            width: double.infinity,
-            height: 18,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(4),
             ),
-          ),
-          const SizedBox(height: 6),
-          Container(
-            width: 200,
-            height: 18,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(4),
-            ),
-          ),
-          const SizedBox(height: 12),
-          Container(
-            width: double.infinity,
-            height: 14,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(4),
-            ),
-          ),
-          const SizedBox(height: 4),
-          Container(
-            width: double.infinity,
-            height: 14,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(4),
-            ),
-          ),
-          const SizedBox(height: 4),
-          Container(
-            width: 150,
-            height: 14,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(4),
-            ),
-          ),
+          ],
         ],
       ),
     );
